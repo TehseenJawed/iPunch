@@ -1,0 +1,29 @@
+@import '../../styles/config.scss';
+
+.signup-paper{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+    flex-direction: column;
+    width: 30%;
+    height: 550px;
+    background-color: white;
+    border-radius: 15px;
+}
+
+@media only screen and (max-width: 1024px) {
+    .signup-paper{
+        width: 45%;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .signup-paper{
+        width: 70%;
+    }
+}
+@media only screen and (max-width: 426px) {
+    .signup-paper{
+        width: 100%;
+    }
+}

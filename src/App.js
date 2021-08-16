@@ -1,15 +1,19 @@
 import React from 'react';
-import './App.css';
+import './App.scss';
 import { Provider } from 'react-redux';
 import store from './redux/store.js'
-import Home from './screen/Home/Home'
-
+import Routes from './config/router';
+import {
+  BrowserRouter as Router
+} from "react-router-dom";
 function App() {
 
   return (
-    <Provider store={store}>
-      <Home />
-    </Provider>
+    <Router>
+      <Provider store={store}>
+        <Routes />
+      </Provider>
+    </Router>
   );
 }
 
