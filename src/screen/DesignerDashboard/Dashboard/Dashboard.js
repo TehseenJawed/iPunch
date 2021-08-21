@@ -1,12 +1,8 @@
 import React, {useState} from 'react'
-import Table from '../../../components/Table/table'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
-import ClientOrderTable from './component/ClientOrderTable'
-import MyClients from './component/MyClients';
-import UnpaidOrders from './component/UnpaidOrders';
-import OrdersPopover from './component/OrdersPopover';
-import UnpaidPopover from './component/UnpaidPopover'
+import OrderTable from './component/OrderTable'
+import DeliverPopover from './component/DeliverPopover'
 
 const SalesDashboard = () => {
     const [tableData, setTableData] = useState("")
@@ -167,10 +163,11 @@ const SalesDashboard = () => {
         { id: 9, CustomerName: 'Roxie', amount: 1100, paymentStatus: 'Not Paid', createdDate:'5/April/2020', paidDate:'6/April/2020' },
       ];
 
-    const clientData =[
+    const clientData ={
         rows,
-        columns
-    ]
+        columns,
+        setUnpaidFlag
+}
     const clientData2 ={
         clientOrderRows,
         clientOrderColumn,
@@ -182,41 +179,39 @@ const SalesDashboard = () => {
 
     return (
         <div>
-            <OrdersPopover data={[orderFlag, setOrderFlag, orderData]}/>
-            <UnpaidPopover data={[unpaidFlag, setUnpaidFlag, orderData]}/>
+            <DeliverPopover data={[unpaidFlag, setUnpaidFlag, orderData]}/>
             <div className="dashboard-tableContainer">
 
-                <div className="tableContainer1">
+                <div className="designerContainer1">
                     <div className="tableHeader">
-                        Clients Orders
-                        <button className="table-btn">View</button>
+                        New Designs
+                        <button className="designertable-btn">View</button>
                     </div>
-                   <ClientOrderTable data={clientData2} />
+                   <OrderTable data={clientData} />
                 </div>
 
-                <div className="tableContainer2">
-                    
+                <div className="designerContainer2">
                     <div className="tableHeader">
-                        My Clients
-                        <button className="table-btn table-btn2">View</button>
+                        Paid Designs
+                        <button className="designertable-btn">View</button>
                     </div>
-                   <MyClients data={clientData} />
+                   <OrderTable data={clientData} />
                 </div>
 
-                <div className="tableContainer3">
+                <div className="designerContainer2">
                     <div className="tableHeader">
-                        Unpaid Orders
-                        <button className="table-btn table-btn3">View</button>
+                        Unpaid Designs
+                        <button className="designertable-btn">View</button>
                     </div>
-                    <UnpaidOrders data={clientData2} />
+                   <OrderTable data={clientData} />
                 </div>
 
-                <div className="tableContainer4">
+                <div className="designerContainer2">
                     <div className="tableHeader">
-                        My Comission
-                        <button className="table-btn">View</button>
+                        Invoices
+                        <button className="designertable-btn">View</button>
                     </div>
-                   <Table data={clientData} />
+                   <OrderTable data={clientData} />
                 </div>
 
             </div>

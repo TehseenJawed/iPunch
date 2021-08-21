@@ -25,9 +25,10 @@ const Login = () => {
     const [snackBar, setSnackBar] = useState(false)
     const [snackObj, setSnackObj] = useState({})
 
-    const URL = useSelector(LOGIN_DATA)
+    const LoginData = useSelector(LOGIN_DATA)
+    console.log(LoginData)
     const dispatch = useDispatch()
-    console.log("===> ",URL)
+    
     const Signin = () => {
         setLoader(true)
         const newObj = {
@@ -35,7 +36,7 @@ const Login = () => {
             pass
         }
 
-        if(email == "tehseenjawed1@gmail.com" && pass == "test12345"){
+        if(email == "sales-ipunch@gmail.com" && pass == "test12345"){
             const snack = {
                 variant:"success",
                 text:"You haved Loggedin successfully"
@@ -43,7 +44,19 @@ const Login = () => {
             setSnackObj(snack)
             setSnackBar(true)
             setTimeout(() => {
-                dispatch(ChangeSalesLogin({id:1, name:"Tehseen Jawed"}))
+                dispatch(ChangeSalesLogin({id:1, name:"Tehseen Jawed", userType:"Sales"}))
+                setRedirect(true)
+            },2000)
+        }
+        else if(email == "designer-ipunch@gmail.com" && pass == "test12345"){
+            const snack = {
+                variant:"success",
+                text:"You haved Loggedin successfully"
+            }
+            setSnackObj(snack)
+            setSnackBar(true)
+            setTimeout(() => {
+                dispatch(ChangeSalesLogin({id:1, name:"Tehseen Jawed", userType:"Designer"}))
                 setRedirect(true)
             },2000)
         }
@@ -66,7 +79,6 @@ const Login = () => {
 
     useEffect(() => {
         if(email.includes("@")){
-            console.log("At has found !...")
             setPassError(false)
         }
         if(email !== "" && email.includes("@") == false){
@@ -76,7 +88,8 @@ const Login = () => {
 
     return (
         <div className="login-container">
-            {redirect ? <Redirect to="/ip-sales/dashboard" /> : null}
+            {redirect === true && LoginData.userType == "Sales" ? <Redirect to="/ip-sales/dashboard" /> : null}
+            {redirect === true && LoginData.userType == "Designer" ? <Redirect to="/ip-designer/dashboard" /> : null}
             
             <div className="login-paper">
                 <div className="login-indecator">

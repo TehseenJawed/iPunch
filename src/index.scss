@@ -7,3 +7,19 @@
     font-size: 13px;
     font-family: 'Raleway', sans-serif;
 }
+.PrivateTabIndicator-colorSecondary-6{
+    background-color:$primary !important;
+}
+.dropZone-border{
+    border: 1px solid $primary;
+    padding: 10px 20px;
+    text-align: center;
+    cursor: pointer;
+}
+.MuiInputBase-input{
+    // height: 0px !important;
+}
+.dropmenu-link{
+    text-decoration: none;
+    color: black;
+}

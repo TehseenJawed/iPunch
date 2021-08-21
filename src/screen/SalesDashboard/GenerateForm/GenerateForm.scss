@@ -1,0 +1,79 @@
+.salesOrder-formContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 80%;
+    margin-left: 7%;
+    font-size: 55px;
+}
+.salesForm-heading{
+    font-size: 20px;
+    color:$primary
+}
+.salesOrder-formTextfields{
+    display: flex;
+    justify-content: space-evenly;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+.salesOrder-Textfield{
+    width: 45vh;
+    margin: 30px 10px;
+}
+.salesOrder-Textfield2{
+    width: 97vh;
+}
+.salesOrder-copyField{
+    width: 100vh;
+}
+.salesOrder-CopysubField{
+    width: 89vh;
+}
+.salesOrder-Textfield3{
+    text-align: center;
+    margin: 10vh 0vh;
+}
+.salesOrder-CopyField{
+    width: 100vh;
+    padding-left: 20px;
+}
+@media only screen and (max-width: 1024px) {
+    .salesOrder-copyField{
+        width: 83vh;
+    }
+    .salesOrder-CopysubField{
+        width: 70vh;
+    }
+    .salesOrder-Textfield{
+        width: 37vh;
+        margin: 30px 3px;
+    }
+    .salesOrder-formContainer{
+        width: 95%;
+        margin-left: 0%;
+    }
+    .salesOrder-Textfield2{
+        width: 80vh;
+    }
+}
+@media only screen and (max-width: 768px) {
+    .salesOrder-Textfield{
+        width: 45vh;
+        margin: 30px 3px;
+    }
+    .salesOrder-Textfield2{
+        width: 45vh;
+    }
+    .makeStyles-button-3{
+        text-align: center;
+        margin: 10vh 0vh;
+        padding: 10px 50px;
+    }
+    .salesOrder-CopysubField{
+        width: 38vh;
+    }
+    .salesOrder-copyField{
+        width: 48vh;
+    }
+}

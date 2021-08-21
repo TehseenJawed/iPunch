@@ -1,0 +1,67 @@
+.registerClient-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    justify-content: center;
+    height: 500px;
+}
+.registerClient-heading{
+    font-size: 25px;
+    font-weight: 300;
+    color: $primary;
+    margin-bottom: 2vh;
+}
+.registerClient-subContainer{
+    width: 90%;
+    flex-wrap: wrap;
+    margin-top: 10vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.registerClient-select{
+    width: 30vh;
+    height: 45px;
+    margin: 5px;
+}
+.registerClient-table{
+    width: 95%;
+    margin: 1%;
+    background-color: $primary;
+    padding: 10px 0px;
+    border-radius: 10px;
+}
+.registerClient-mainContainer{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-wrap: wrap;
+    flex-direction: column;
+}
+.registerClient-tableSelect{
+    width: 150px;
+    height: 30px;
+    margin: 5px;
+}
+.registerClient-tableSort{
+    background-color:white;
+    width: 95%;
+    border-radius: 0px 20px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    align-items: center;
+    position: relative;
+    font-weight: bold;
+    margin-top: -12px;
+}
+.registerSort-text{
+    margin-top: 15px;
+    margin-right: 10px;
+    color: $primary;
+}
+@media only screen and (max-width: 1024px) {
+    
+}

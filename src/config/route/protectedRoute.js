@@ -1,15 +1,15 @@
 import React from 'react';
 import { Route, Redirect } from 'react-router-dom';
 import {useSelector} from 'react-redux';
-import {SALES_DATA} from '../../redux/reducer/AuthReducer'
+import {LOGIN_FLAG} from '../../redux/reducer/AuthReducer'
 
 
 function PrivateRoute ({ children, ...rest }) {
-  const LoginFlag = useSelector(SALES_DATA)
+  const LoginFlag = useSelector(LOGIN_FLAG)
 
   return (
     <Route {...rest} render={() => {
-      return LoginFlag == true
+      return LoginFlag === true
         ? children
         : <Redirect to='/login' />
     }} />

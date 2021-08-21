@@ -1,0 +1,86 @@
+.dashboard-tableContainer{
+    display: flex;
+    justify-content: center;
+    // align-items: center;
+    flex-wrap: wrap;
+    flex-direction: row;
+}
+.designerContainer1{
+    width: 99%;
+    margin: 1%;
+    background-color: $red;
+    padding: 10px 0px;
+    border-radius: 10px;
+}
+.tableContainer3{
+    width: 50%;
+    margin: 1%;
+    background-color: $red;
+    padding: 10px 0px;
+    border-radius: 10px;
+}
+.tableContainer4{
+    width: 30%;
+    margin: 1%;
+    background-color: $primary;
+    padding: 10px 0px;
+    border-radius: 10px;
+}
+.designerContainer2{
+    width: 48%;
+    margin: 1%;
+    background-color: $seablue ;
+    padding: 10px 0px;
+    border-radius: 10px;
+}
+.tableHeader{
+    display: flex;
+    justify-content: space-between;
+    padding:0px 10px;
+    color: white;
+    font-size: 17px;
+    margin: 5px;
+}
+.designertable-btn{
+    padding: 6px 15px;
+    font-size: 16px;
+    border-radius: 5px;
+    color: white;
+    background-color: $red;
+    border: none;
+    cursor: pointer;
+    transition: 0.2s;
+}
+.designertable-btn:hover{
+    background-color:#cf2547;
+    transition: 0.2s;
+}
+.table-btn2{
+    background-color: $seablue;
+}
+.table-btn2:hover{
+    background-color:#15bedb;
+    transition: 0.2s;
+}
+.table-btn3{
+    background-color: $red;
+}
+.table-btn3:hover{
+    background-color:#da2146;
+    transition: 0.2s;
+}
+@media only screen and (max-width: 766px) {
+    .tableContainer1{
+        width: 95%;
+    }
+    .tableContainer2{
+        width: 95%;
+    }
+    .tableContainer3{
+        width: 95%;
+    }
+    .tableContainer4{
+        width: 95%;
+    }
+
+}
