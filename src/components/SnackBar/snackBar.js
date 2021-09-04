@@ -1,8 +1,10 @@
 import React from 'react';
-import Button from '@material-ui/core/Button';
+import {useSelector, useDispatch} from 'react-redux';
 import Snackbar from '@material-ui/core/Snackbar';
 import MuiAlert from '@material-ui/lab/Alert';
 import { makeStyles } from '@material-ui/core/styles';
+import {ChangeSnackFlag} from '../../redux/action/AuthAction';
+import {SNACK_TEXT, SNACK_FLAG} from '../../redux/reducer/AuthReducer';
 
 function Alert(props) {
   return <MuiAlert elevation={6} variant="filled" {...props} />;
@@ -18,21 +20,22 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function CustomizedSnackbars({data}) {
+  const snackText = useSelector(SNACK_TEXT)
+  const snackFlag = useSelector(SNACK_FLAG)
+  const dispatch = useDispatch()
   const classes = useStyles();
-  const {snackBar, setSnackBar, variant, text} = data
-
+  
   const handleClose = (event, reason) => {
     if (reason === 'clickaway') {
       return;
     }
-
-    setSnackBar(false);
+    dispatch(ChangeSnackFlag(false))
   };
   return (
     <div className={classes.root}>
-      <Snackbar open={snackBar} autoHideDuration={6000} onClose={handleClose}>
-        <Alert onClose={handleClose} severity={variant}>
-          {text}
+      <Snackbar open={snackFlag} autoHideDuration={6000} onClose={handleClose}>
+        <Alert onClose={handleClose} severity={snackText.variant}>
+          {snackText.text}
         </Alert>
       </Snackbar>
       

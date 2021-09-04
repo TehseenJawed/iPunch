@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
+import {Link, Redirect} from 'react-router-dom';
 import CompanyLogo from '../../assets/brand/logo.png'
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PersonIcon from '@material-ui/icons/Person';
@@ -17,9 +17,13 @@ import FlipToBackIcon from '@material-ui/icons/FlipToBack';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import FlipCameraIosIcon from '@material-ui/icons/FlipCameraIos';
 import FormatPaintIcon from '@material-ui/icons/FormatPaint';
+import {useSelector, useDispatch} from 'react-redux';
+import {LOGIN_FLAG} from '../../redux/reducer/AuthReducer'
 
 const DesignerDashboard = ({ children }) => {
     const [anchorEl, setAnchorEl] = useState(null);
+    const LoginFlag = useSelector(LOGIN_FLAG)
+    console.log("It is data",LoginFlag)
     const DropObj = {
         anchorEl, 
         setAnchorEl,
@@ -31,6 +35,7 @@ const DesignerDashboard = ({ children }) => {
     };
     return (
         <div className="salesContainer">
+            {LoginFlag ? null : <Redirect to="/login" />}
             <div className="salesSide-menu">
 
                 <div className="designerLogo-container">
@@ -43,12 +48,12 @@ const DesignerDashboard = ({ children }) => {
                     <div className="salesSide-text">Dashboard</div>
                 </Link>
 
-                <Link to="/ip-designer/generate-form" className="salesSidemenu-item">
+                <Link to="/ip-designer/my-designs" className="salesSidemenu-item">
                     <ChromeReaderModeIcon style={{ fill: "#FB6340", fontSize: 18 }} />
-                    <div className="salesSide-text">All Designs</div>
+                    <div className="salesSide-text">My Designs</div>
                 </Link>
 
-                <Link to="/ip-designer/register-client" className="salesSidemenu-item">
+                <Link to="/ip-designer/my-invoices" className="salesSidemenu-item">
                     <LibraryBooksIcon style={{ fill: "#F5365C", fontSize: 18 }} />
                     <div className="salesSide-text">My Invoices</div>
                 </Link>

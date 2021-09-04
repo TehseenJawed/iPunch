@@ -1,14 +1,24 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import {useSelector, useDispatch} from 'react-redux';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
 import OrderTable from './component/OrderTable'
 import DeliverPopover from './component/DeliverPopover'
+import DesignerInvoice from './component/DesignerInvoice';
+import {LOGIN_FLAG, LOGIN_DATA} from '../../../redux/reducer/AuthReducer'
+import {FetchNewOrders} from '../../../redux/action/DesignerAction';
+import {ALL_NEW_ORDERS} from '../../../redux/reducer/DesignerReducer';
 
 const SalesDashboard = () => {
     const [tableData, setTableData] = useState("")
     const [orderFlag, setOrderFlag] = useState(false)
     const [orderData, setOrderData] = useState("")
     const [unpaidFlag, setUnpaidFlag] = useState(false)
+    const dispatch = useDispatch()
+    const LoginFlag = useSelector(LOGIN_FLAG)
+    const LoginData = useSelector(LOGIN_DATA)
+    const NewOrders = useSelector(ALL_NEW_ORDERS)
+
 
     const columns = [
         { id: 'name', label: 'Client Name', align: 'center', minWidth: 40 },
@@ -66,18 +76,6 @@ const SalesDashboard = () => {
     function createData(name, state, email, cost, phone, interest, date) {
         return { name, state, email, cost, phone, interest, date};
     }
-
-    const rows = [
-        createData('Tehseen Jawed', 'Ohio', 'tehseenjawed1@gmail.com', 1, '(785)-814-0146', 'Interested', '05/04/2021'),
-        createData('Tehseen Jawed', 'Ohio', 'tehseenjawed1@gmail.com', 51, '(785)-814-0146', 'Interested', '05/04/2021'),
-        createData('Tehseen Jawed', 'Ohio', 'tehseenjawed1@gmail.com', 51, '(785)-814-0146', 'Interested', '05/04/2021'),
-        createData('Tehseen Jawed', 'Ohio', 'tehseenjawed1@gmail.com', 51, '(785)-814-0146', 'Interested', '05/04/2021'),
-        createData('Tehseen Jawed', 'Ohio', 'tehseenjawed1@gmail.com', 51, '(785)-814-0146', 'Interested', '05/04/2021'),
-        createData('Tehseen Jawed', 'Ohio', 'tehseenjawed1@gmail.com', 51, '(785)-814-0146', 'Interested', '05/04/2021'),
-        createData('Tehseen Jawed', 'Ohio', 'tehseenjawed1@gmail.com', 51, '(785)-814-0146', 'Interested', '05/04/2021'),
-        createData('Tehseen Jawed', 'Ohio', 'tehseenjawed1@gmail.com', 51, '(785)-814-0146', 'Interested', '05/04/2021'),
-        createData('Tehseen Jawed', 'Ohio', 'tehseenjawed1@gmail.com', 51, '(785)-814-0146', 'Interested', '05/04/2021'),
-    ];
 
     const clientOrderColumn = [
         { field: 'id', 
@@ -162,11 +160,11 @@ const SalesDashboard = () => {
         { id: 8, CustomerName: 'Frances', amount: 130, paymentStatus: 'Paid', createdDate:'5/April/2020', paidDate:'6/April/2020' },
         { id: 9, CustomerName: 'Roxie', amount: 1100, paymentStatus: 'Not Paid', createdDate:'5/April/2020', paidDate:'6/April/2020' },
       ];
-
+console.log("=============> ",NewOrders)
     const clientData ={
-        rows,
+        rows: NewOrders,
         columns,
-        setUnpaidFlag
+        setUnpaidFlag,
 }
     const clientData2 ={
         clientOrderRows,
@@ -176,6 +174,10 @@ const SalesDashboard = () => {
         setOrderData,
         setUnpaidFlag
     }
+ 
+    useEffect(() => {
+      dispatch(FetchNewOrders())
+    },[])
 
     return (
         <div>
@@ -184,12 +186,12 @@ const SalesDashboard = () => {
 
                 <div className="designerContainer1">
                     <div className="tableHeader">
-                        New Designs
+                        WORKs TO DO
                         <button className="designertable-btn">View</button>
                     </div>
                    <OrderTable data={clientData} />
                 </div>
-
+                
                 <div className="designerContainer2">
                     <div className="tableHeader">
                         Paid Designs
@@ -211,7 +213,7 @@ const SalesDashboard = () => {
                         Invoices
                         <button className="designertable-btn">View</button>
                     </div>
-                   <OrderTable data={clientData} />
+                   <DesignerInvoice data={clientData} />
                 </div>
 
             </div>

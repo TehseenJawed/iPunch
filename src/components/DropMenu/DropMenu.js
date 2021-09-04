@@ -7,9 +7,10 @@ import ListItemText from '@material-ui/core/ListItemText';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import TuneIcon from '@material-ui/icons/Tune';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux';
-import {Sales_Logout} from '../../redux/action/AuthAction'
+import {SignoutFunction} from '../../redux/action/AuthAction'
+import {LOGIN_FLAG} from '../../redux/reducer/AuthReducer'
 
 
 const StyledMenu = withStyles({
@@ -47,14 +48,15 @@ export default function CustomizedMenus({data}) {
   const { anchorEl, setAnchorEl, profile } = data
   const dispatch = useDispatch()
   const [reload, setReload] = useState("")
-  
+  const LoginFlag = useSelector(LOGIN_FLAG)
+  console.log(LoginFlag)
 
   const handleClose = () => {
     setAnchorEl(null);
   };
 
   const Signout = () => {
-    dispatch(Sales_Logout(""))
+    dispatch(SignoutFunction({}))
     setReload("")
     console.log("Working is here")
     
@@ -62,6 +64,7 @@ export default function CustomizedMenus({data}) {
 
   return (
     <div>
+      {LoginFlag ? null : <Redirect to="/login" />}
       <StyledMenu
         id="customized-menu"
         anchorEl={anchorEl}

@@ -1,4 +1,5 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import {useSelector, useDispatch} from 'react-redux'
 import Table from '../../../components/Table/table'
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
@@ -7,33 +8,41 @@ import MyClients from './component/MyClients';
 import UnpaidOrders from './component/UnpaidOrders';
 import OrdersPopover from './component/OrdersPopover';
 import UnpaidPopover from './component/UnpaidPopover'
+import {LOGIN_FLAG, LOGIN_DATA} from '../../../redux/reducer/AuthReducer'
+import {SetAllClients_Data, SetAllCustomer_Data, SetMyOrders, SetDeliverOrders, SetUncompleteOrders, SetUnpaidOrders} from '../../../redux/action/AgentAction'
+import { SetService_Data, SetState_Data } from '../../../redux/action/AuthAction'
+import {ALL_CUSTOMER_DATA, CUSTOMER_RANGE} from '../../../redux/reducer/AgentDataReducer'
 
 const SalesDashboard = () => {
     const [tableData, setTableData] = useState("")
     const [orderFlag, setOrderFlag] = useState(false)
     const [orderData, setOrderData] = useState("")
     const [unpaidFlag, setUnpaidFlag] = useState(false)
+      const LoginData = useSelector(LOGIN_DATA)
+      const customerRows = useSelector(ALL_CUSTOMER_DATA)
+    const customerRange = useSelector(CUSTOMER_RANGE)
+    const dispatch = useDispatch()
 
-    const columns = [
-        { id: 'name', label: 'Client Name', align: 'center', minWidth: 40 },
+    const customerColumn = [
+        { id: 'username', label: 'Client Name', align: 'center', minWidth: 100 },
         {
-            id: 'state',
-            label: 'State',
-            minWidth: 170,
+            id: 'company',
+            label: 'Company',
+            minWidth: 100,
             align: 'center',
             format: (value) => value.toLocaleString('en-US'),
         },
         {
             id: 'email',
             label: 'Email',
-            minWidth: 170,
+            minWidth: 100,
             align: 'center',
             format: (value) => value.toLocaleString('en-US'),
         },
         {
-            id: 'cost',
-            label: 'Charges',
-            minWidth: 170,
+            id: 'phone',
+            label: 'Phone',
+            minWidth: 100,
             align: 'center',
             renderCell: (params) => {
                 return (
@@ -42,30 +51,35 @@ const SalesDashboard = () => {
                   </div>
                 );
               },
-            // format: (value) => value.toLocaleString('en-US'),
         },
         {
-            id: 'phone',
-            label: 'Phone',
-            minWidth: 170,
+            id: 'created_at',
+            label: 'Created At',
+            minWidth: 100,
             align: 'center',
             format: (value) => value.toFixed(2),
         },
         {
-            id: 'interest',
-            label: 'Interest',
-            minWidth: 170,
+            id: 'website',
+            label: 'Website',
+            minWidth: 100,
             align: 'center',
             format: (value) => value.toFixed(2),
         },
         {
-            id: 'date',
-            label: 'Created Date',
-            minWidth: 170,
+            id: 'acc_status',
+            label: 'Account Status',
+            minWidth: 100,
             align: 'center',
             format: (value) => value.toFixed(2),
         },
     ];
+
+    const changeCustomerPage = (e) => {
+      console.log("E is here ===> ",e)
+      // dispatch(UpdateCustomerRange(e))
+    }
+
 
     function createData(name, state, email, cost, phone, interest, date) {
         return { name, state, email, cost, phone, interest, date};
@@ -167,10 +181,13 @@ const SalesDashboard = () => {
         { id: 9, CustomerName: 'Roxie', amount: 1100, paymentStatus: 'Not Paid', createdDate:'5/April/2020', paidDate:'6/April/2020' },
       ];
 
-    const clientData =[
-        rows,
-        columns
-    ]
+    const clientData ={
+      rows:customerRows,
+      columns:customerColumn,
+      range:customerRange,
+      changeCustomerPage
+    }
+    
     const clientData2 ={
         clientOrderRows,
         clientOrderColumn,
@@ -180,6 +197,17 @@ const SalesDashboard = () => {
         setUnpaidFlag
     }
 
+    useEffect(() => {
+      dispatch(SetAllClients_Data())
+      dispatch(SetAllCustomer_Data())
+      dispatch(SetMyOrders())
+      dispatch(SetService_Data())
+      dispatch(SetState_Data())
+      dispatch(SetUncompleteOrders())
+      dispatch(SetDeliverOrders())
+      dispatch(SetUnpaidOrders())
+    },[])
+
     return (
         <div>
             <OrdersPopover data={[orderFlag, setOrderFlag, orderData]}/>
@@ -188,7 +216,7 @@ const SalesDashboard = () => {
 
                 <div className="tableContainer1">
                     <div className="tableHeader">
-                        Clients Orders
+                        Clients New Orders
                         <button className="table-btn">View</button>
                     </div>
                    <ClientOrderTable data={clientData2} />
@@ -203,12 +231,13 @@ const SalesDashboard = () => {
                    <MyClients data={clientData} />
                 </div>
 
-                <div className="tableContainer3">
+                <div className="tableContainer3-sales">
                     <div className="tableHeader">
                         Unpaid Orders
                         <button className="table-btn table-btn3">View</button>
                     </div>
-                    <UnpaidOrders data={clientData2} />
+                    
+                    <UnpaidOrders data={clientData} />
                 </div>
 
                 <div className="tableContainer4">
@@ -216,7 +245,7 @@ const SalesDashboard = () => {
                         My Comission
                         <button className="table-btn">View</button>
                     </div>
-                   <Table data={clientData} />
+                   {/* <Table data={clientData} /> */}
                 </div>
 
             </div>

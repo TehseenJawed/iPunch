@@ -1,5 +1,5 @@
-import React, {useState} from 'react';
-import {Link} from 'react-router-dom';
+import React, {useState, useEffect} from 'react';
+import {Link, Redirect} from 'react-router-dom';
 import CompanyLogo from '../../assets/brand/logo.png'
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PersonIcon from '@material-ui/icons/Person';
@@ -15,9 +15,17 @@ import AccountBalanceWalletIcon from '@material-ui/icons/AccountBalanceWallet';
 import StorageIcon from '@material-ui/icons/Storage';
 import FlipToBackIcon from '@material-ui/icons/FlipToBack';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
+import {useSelector, useDispatch} from 'react-redux';
+import {LOGIN_FLAG} from '../../redux/reducer/AuthReducer'
+import {ALL_CLIENT_DATA, ALL_CUSTOMER_DATA} from '../../redux/reducer/AgentDataReducer'
+import { DataUsageSharp } from '@material-ui/icons';
 
 const SalesDashboards = ({ children }) => {
     const [anchorEl, setAnchorEl] = useState(null);
+    const [expectedClient, setExpectedClient] = useState([])
+    const LoginFlag = useSelector(LOGIN_FLAG)
+    const clientData = useSelector(ALL_CLIENT_DATA)
+    const customerData = useSelector(ALL_CUSTOMER_DATA)
     const DropObj = {
         anchorEl, 
         setAnchorEl,
@@ -27,8 +35,17 @@ const SalesDashboards = ({ children }) => {
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+    const expectedClientData = expectedClient.filter(value => value.interest === "Contact Later")
+    useEffect( ()  => {
+        if(clientData.results !== undefined){
+            const response = clientData.results
+            setExpectedClient(response)
+        }
+        
+    },[clientData])
     return (
         <div className="salesContainer">
+            {LoginFlag ? null : <Redirect to="/login" />}
             <div className="salesSide-menu">
 
                 <div className="salesLogo-container">
@@ -88,7 +105,7 @@ const SalesDashboards = ({ children }) => {
                         </div>
                         <div className="widgetItem-heading">
                             Expected Clients
-                            <div className="widget-mainhighlight">37</div>
+                            <div className="widget-mainhighlight">{expectedClient.length}</div>
                         </div>
                         <div className="widgetItem-heading2 widgetItem-1">
                             <DialerSipIcon style={{fill: "white", fontSize:25}}/>
@@ -101,7 +118,7 @@ const SalesDashboards = ({ children }) => {
                        </div>
                         <div className="widgetItem-heading">
                             My New Clients
-                            <div className="widget-mainhighlight">7</div>
+                            <div className="widget-mainhighlight">{expectedClientData.length}</div>
                         </div>
                         <div className="widgetItem-heading2 widgetItem-2">
                             <GroupAddIcon style={{fill: "white", fontSize:25}}/>

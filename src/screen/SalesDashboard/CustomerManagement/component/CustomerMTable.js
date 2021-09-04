@@ -14,6 +14,9 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import { ALL_CUSTOMER_DATA, ALL_ORDER_DATA } from '../../../../redux/reducer/AgentDataReducer'
+import { LOGIN_DATA } from '../../../../redux/reducer/AuthReducer'
+import {useSelector, useDispatch} from 'react-redux'
 
 const useRowStyles = makeStyles({
   root: {
@@ -23,26 +26,11 @@ const useRowStyles = makeStyles({
   },
 });
 
-function createData(name, calories, fat, carbs, protein, price) {
-  return {
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-    price,
-    history: [
-      { date: '2020-01-05', customerId: '11091700', amount: 3 },
-      { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
-    ],
-  };
-}
-
 function Row(props) {
-  const { row } = props;
+  const { row, orders } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
-
+  console.log(orders)
   return (
     <React.Fragment>
       <TableRow className={classes.root}>
@@ -51,43 +39,43 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
-        </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
+        <TableCell component="th" scope="row">{row.username}</TableCell>
+        <TableCell align="center">{row.email}</TableCell>
+        <TableCell align="center">{row.phone}</TableCell>
+        <TableCell align="center">{row.company}</TableCell>
+        <TableCell align="center">{row.id}</TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
               <Typography variant="h6" gutterBottom component="div">
-                History
+                Details
               </Typography>
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
+                    <TableCell align="center">Orders</TableCell>
+                    <TableCell align="center">Unpaid Designs</TableCell>
+                    <TableCell align="center">Generate Invoice</TableCell>
+                    <TableCell align="center">Paid Designs</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
+                <TableRow key={row.id}>
+                      <TableCell component="th" align="center" scope="row">
+                        {orders.customerOrder.length}
                       </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
+                      <TableCell component="th" align="center" scope="row">
+                        {orders.unpaidOrders.length}
                       </TableCell>
-                    </TableRow>
-                  ))}
+                      <TableCell component="th" align="center" scope="row">
+                        {orders.length}
+                      </TableCell>
+                      <TableCell component="th" align="center" scope="row">
+                        {orders.paidOrders.length}
+                      </TableCell>
+                </TableRow>
                 </TableBody>
               </Table>
             </Box>
@@ -98,50 +86,49 @@ function Row(props) {
   );
 }
 
-Row.propTypes = {
-  row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-      }),
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired,
-  }).isRequired,
-};
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-  createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-  createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-  createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
-];
 
 export default function CollapsibleTable() {
+  const customerData = useSelector(ALL_CUSTOMER_DATA)
+  const ordersData = useSelector(ALL_ORDER_DATA)
+  const loginData = useSelector(LOGIN_DATA)
+  const rows = customerData.results
+  console.log(ordersData.results)
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell>Customer Name</TableCell>
+            <TableCell align="center">Email</TableCell>
+            <TableCell align="center">Phone</TableCell>
+            <TableCell align="center">Company</TableCell>
+            <TableCell align="center">Orders</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <Row key={row.name} row={row} />
-          ))}
+          {rows.map((row) => {
+            const customerOrder = []
+            const unpaidOrders = []
+            const paidOrders = []
+            for(var a = 0; a<ordersData.results.length; a++){
+              console.log(ordersData.results[a])
+              if(ordersData.results[a].customer.id === row.id){
+                customerOrder.push(ordersData.results[a])
+                if(ordersData.results[a].paymentStatus === "Not Paid"){
+                  unpaidOrders.push(ordersData.results[a])
+                }
+                if(ordersData.results[a].paymentStatus === "Paid"){
+                  paidOrders.push(ordersData.results[a])
+                }
+              }
+            }
+
+            const filterOrders = {customerOrder, unpaidOrders, paidOrders}
+            return(
+              <Row key={row.id} row={row} orders={filterOrders} />
+            )
+          })}
         </TableBody>
       </Table>
     </TableContainer>

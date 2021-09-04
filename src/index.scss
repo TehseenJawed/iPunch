@@ -12,7 +12,16 @@
 }
 .dropZone-border{
     border: 1px solid $primary;
+    z-index: 1000;
     padding: 10px 20px;
+    text-align: center;
+    cursor: pointer;
+}
+.dropZone-designer{
+    border: 1px solid white;
+    z-index: 1000;
+    margin: 50px;
+    padding: 30px 20px;
     text-align: center;
     cursor: pointer;
 }

@@ -12,6 +12,12 @@
     padding: 10px 0px;
     border-radius: 10px;
 }
+.designer-increament{
+    color: green;
+}
+.designer-decreament{
+    color: $red;
+}
 .tableContainer3{
     width: 50%;
     margin: 1%;
@@ -68,6 +74,20 @@
 .table-btn3:hover{
     background-color:#da2146;
     transition: 0.2s;
+}
+.new-design-container{
+    width: 100%;
+}
+.new-design-header{
+    width: 100%;
+    font-size: 20px;
+    color: #da2146;
+    margin: 20px;
+}
+.new-design-innerContainer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
 }
 @media only screen and (max-width: 766px) {
     .tableContainer1{

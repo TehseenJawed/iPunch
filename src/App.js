@@ -6,11 +6,13 @@ import Routes from './config/router';
 import {
   BrowserRouter as Router
 } from "react-router-dom";
+import SnackBar from './components/SnackBar/snackBar'
 function App() {
 
   return (
     <Router>
       <Provider store={store}>
+       <SnackBar />
         <Routes />
       </Provider>
     </Router>

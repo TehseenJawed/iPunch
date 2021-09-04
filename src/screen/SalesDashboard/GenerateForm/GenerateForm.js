@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import {useSelector, useDispatch} from 'react-redux'
 import PropTypes from 'prop-types';
 import Paper from '@material-ui/core/Paper';
 import FileCopyIcon from '@material-ui/icons/FileCopy';
@@ -13,6 +14,7 @@ import FormHelperText from '@material-ui/core/FormHelperText';
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
 import DropZone from '../../../components/Dropzone/Dropzone'
+import CircularProgress from '../../../components/CircularProgress/circularProgress'
 
 import SwipeableViews from 'react-swipeable-views';
 import { makeStyles, useTheme } from '@material-ui/core/styles';
@@ -21,6 +23,10 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
+import {LOADING, LOGIN_DATA, INVOICE_ID, SERVICES} from '../../../redux/reducer/AuthReducer'
+import {ALL_CUSTOMER_DATA} from '../../../redux/reducer/AgentDataReducer'
+import {Order_By_Agent, Create_Customer_Account, Generate_InvoiceBy_Agent} from '../../../redux/action/AuthAction'
+import {SetAllCustomer_Data} from '../../../redux/action/AgentAction'
 
 
 function TabPanel(props) {
@@ -85,8 +91,14 @@ function TabPanel(props) {
     const classes = useStyles();
     const theme = useTheme();
     const [value, setValue] = React.useState(0);
+    const LoginData = useSelector(LOGIN_DATA)
+    const loadingSelector = useSelector(LOADING)
+    const InvoiceId = useSelector(INVOICE_ID)
+    const ClientData = useSelector(ALL_CUSTOMER_DATA)
+    const Services = useSelector(SERVICES)
 
-    const [agentName, setAgentName] = useState("Tehseen Jawed")
+    console.log("Services is here ",Services)
+
     const [client, setClient] = useState("")
     const [service, setService] = useState("")
     const [upload, setUpload] = useState("")
@@ -101,10 +113,12 @@ function TabPanel(props) {
 
     const [invoiceNo, setInvoiceNo] = useState(105412)
     const [currency, setCurrency] = useState("")
+    const [amount, setAmount] = useState(0)
     const [paymentType, setPaymentType] = useState("")
     const [invoiceLink, setInvoiceLink] = useState("")
-
-  
+    const getDate = new Date()
+    const dispatch = useDispatch()
+    
     const handleChange = (event, newValue) => {
       setValue(newValue);
     };
@@ -112,6 +126,7 @@ function TabPanel(props) {
     const handleChangeIndex = (index) => {
       setValue(index);
     };
+    const Customers = ClientData.results
 
     function Copy() {
         var copyText = document.getElementById("getLink");
@@ -119,7 +134,63 @@ function TabPanel(props) {
         copyText.setSelectionRange(0, 99999);
         document.execCommand("copy");
       }
+
+    const generateOrder = async () => {
+        var newObj = new FormData()
+        newObj.append('agent',LoginData.user.id);
+        newObj.append('customer',client);
+        newObj.append('orderStatus','Not Assign');
+        newObj.append('paymentStatus','Not Paid');
+        newObj.append('revisions',[]);
+        newObj.append('amount',amount);
+        newObj.append('serviceType',service);
+        upload.forEach((item) => newObj.append("files", item))
+        newObj.append('description',description);
+        // newObj.append('created_at',getDate.getTime());
+        
+        await dispatch(Order_By_Agent(newObj))
+        setAmount("")
+        setService("")
+        setUpload("")
+        setDescription("")
+
+    }
+    
+    const CustomerAccount = async () => {
+        
+        const newObj = {
+            agent:LoginData.user.id,
+            username:customerName,
+            website,
+            accStatus:"Not Verified",
+            phone,
+            company,
+            email,
+            password:"test12345",
+            
+        }
+        await dispatch(Create_Customer_Account(newObj))
+        await dispatch(SetAllCustomer_Data())
+    }
   
+    const GenerateInvoice = async () => {
+        const newObj = {
+            agent_id:LoginData.user.id,
+            client:client,
+            amount:price,
+            currency,
+            payment_type:paymentType,
+        }
+        await dispatch(Generate_InvoiceBy_Agent(newObj))
+        setClient("")
+        setPrice("")
+        setCurrency("")
+        setPaymentType("")
+    }
+    
+    useEffect(() => {
+        if(InvoiceId !== "") setInvoiceLink(`http://google.com/${InvoiceId}`)
+    },[InvoiceId])
     return (
       <div className={classes.root}>
         <AppBar position="static" color="default">
@@ -151,7 +222,11 @@ function TabPanel(props) {
                     <form className="salesOrder-formTextfields" noValidate autoComplete="off">
 
                         <div className="salesOrder-Textfield">
-                            <TextField disabled className="salesOrder-Textfield" value={agentName} id="standard-basic" label="Agent Name" />
+                            <TextField disabled className="salesOrder-Textfield" value={LoginData.user.username} id="standard-basic" label="Agent Name" />
+                        </div>
+
+                        <div className="salesOrder-Textfield">
+                            <TextField className="salesOrder-Textfield" value={amount} onChange={(e) => setAmount(e.target.value)} id="standard-basic" label="Amount"/>
                         </div>
 
                         <div className="salesOrder-Textfield">
@@ -166,9 +241,9 @@ function TabPanel(props) {
                                     <MenuItem value="" disabled>
                                         Client
                                     </MenuItem>
-                                    <MenuItem value={"Tehseen Jawed"}>Tehseen Jawed</MenuItem>
-                                    <MenuItem value={"Tehseen Jawed"}>Tehseen Jawed</MenuItem>
-                                    <MenuItem value={"Tehseen Jawed"}>Tehseen Jawed</MenuItem>
+                                    {Customers !== undefined ?
+                                      Customers.map((v,i) => <MenuItem value={v.id}>{v.username}</MenuItem>)
+                                    :null}
                                 </Select>
                                 <FormHelperText>Client</FormHelperText>
                             </FormControl>
@@ -186,9 +261,12 @@ function TabPanel(props) {
                                     <MenuItem value="" disabled>
                                         Service Type
                                     </MenuItem>
-                                    <MenuItem value={"Vector Designing"}>Vector Designing</MenuItem>
-                                    <MenuItem value={"Digitizing"}>Digitizing</MenuItem>
-                                    <MenuItem value={"Other"}>Others</MenuItem>
+
+                                    {Services.results !== undefined ?
+                                      Services.results.map((v,i) => <MenuItem value={v.service}>{v.service}</MenuItem>)
+                                    : null
+                                    }
+
                                 </Select>
                                 <FormHelperText>Service Type</FormHelperText>
                             </FormControl>
@@ -201,16 +279,21 @@ function TabPanel(props) {
                         <div className="salesOrder-Textfield2">
                             <TextField value={description} onChange={(e) => setDescription(e.target.value)} className="salesOrder-Textfield2" multiline rows={4} id="standard-basic" label="Describe Design Idea" />
                         </div>
-
+                        {loadingSelector ?
+                        <CircularProgress />
+                        :
                         <div className="salesOrder-Textfield3">
                             <Button variant="contained"
                                 className="salesOrder-Textfield3"
                                 className={classes.button}
+                                onClick={generateOrder}
                                 endIcon={<Icon>send</Icon>}
                             >
                                 Generate Order
                             </Button>
                         </div>
+                        }
+                        
 
                     </form>
                 </div>
@@ -224,7 +307,7 @@ function TabPanel(props) {
                     <form className="salesOrder-formTextfields" noValidate autoComplete="off">
 
                         <div className="salesOrder-Textfield">
-                            <TextField disabled className="salesOrder-Textfield" value={agentName} id="standard-basic" label="Agent Name" />
+                            <TextField disabled className="salesOrder-Textfield" value={LoginData.user.username} id="standard-basic" label="Agent Name" />
                         </div>
 
                         <div className="salesOrder-Textfield">
@@ -244,17 +327,22 @@ function TabPanel(props) {
                         </div>
 
                         <div className="salesOrder-Textfield">
-                            <TextField className="salesOrder-Textfield" value={invoiceNo} id="standard-basic" label="Email" />
+                            <TextField className="salesOrder-Textfield" value={website} onChange={(e) => setWebsite(e.target.value)} id="standard-basic" label="Website" />
                         </div>
 
                         <div className="salesOrder-Textfield3">
+                            {loadingSelector ?
+                            <CircularProgress />
+                            :
                             <Button variant="contained"
                                 className="salesOrder-Textfield3"
+                                onClick={CustomerAccount}
                                 className={classes.button}
                                 endIcon={<Icon>send</Icon>}
                             >
                                 Generate Order
                             </Button>
+                            }
                         </div>
 
                     </form>
@@ -270,7 +358,7 @@ function TabPanel(props) {
                     <form className="salesOrder-formTextfields" noValidate autoComplete="off">
 
                         <div className="salesOrder-Textfield">
-                            <TextField disabled className="salesOrder-Textfield" value={agentName} id="standard-basic" label="Agent Name" />
+                            <TextField disabled className="salesOrder-Textfield" value={LoginData.user.username} id="standard-basic" label="Agent Name" />
                         </div>
 
                         <div className="salesOrder-Textfield">
@@ -293,9 +381,9 @@ function TabPanel(props) {
                                     <MenuItem value="" disabled>
                                         Client
                                     </MenuItem>
-                                    <MenuItem value={"Tehseen Jawed"}>Tehseen Jawed</MenuItem>
-                                    <MenuItem value={"Tehseen Jawed"}>Tehseen Jawed</MenuItem>
-                                    <MenuItem value={"Tehseen Jawed"}>Tehseen Jawed</MenuItem>
+                                    {Customers !== undefined ?
+                                       Customers.map((v,i) => <MenuItem value={v.id}>{v.username}</MenuItem>)
+                                    :null}
                                 </Select>
                                 <FormHelperText>Client</FormHelperText>
                             </FormControl>
@@ -358,6 +446,7 @@ function TabPanel(props) {
                         <div className="salesOrder-Textfield3">
                             <Button variant="contained"
                                 className="salesOrder-Textfield3"
+                                onClick={GenerateInvoice}
                                 className={classes.button}
                                 endIcon={<Icon>send</Icon>}
                             >

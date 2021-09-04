@@ -14,6 +14,11 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
+import {useSelector, useDispatch} from 'react-redux';
+import { Button } from '@material-ui/core';
+import {BASE_URL} from '../../../../redux/reducer/AuthReducer'
+import {SetOrderToDeliver} from '../../../../redux/action/DesignerAction'
+import { __SECRET_INTERNALS_DO_NOT_USE_OR_YOU_WILL_BE_FIRED } from 'react-dom';
 
 const useRowStyles = makeStyles({
   root: {
@@ -21,43 +26,78 @@ const useRowStyles = makeStyles({
       borderBottom: 'unset',
     },
   },
+  downloadBtn: {
+    fontSize: 10,
+    height: 30,
+    padding: 5,
+  }
 });
 
-function createData(name, calories, fat, carbs, protein, price) {
+const CalculateComission = (status, amount) => {
+  const finalAmount = 0
+  switch (status) {
+    case 'Changed from client':
+
+  }
+}
+
+function createData(id, name, timeLeft, type, details, price) {
   return {
+    id,
     name,
-    calories,
-    fat,
-    carbs,
-    protein,
+    timeLeft,
+    type,
+    details,
     price,
-    history: [
-      { date: '2020-01-05', customerId: '11091700', amount: 3 },
-      { date: '2020-01-02', customerId: 'Anonymous', amount: 1 },
+    revision: [
+      { date: '2020-01-05', desc: '11091700', status: 'Changed from client', amount: 0, file: '' },
+      { date: '2020-01-02', desc: 'Anonymous', status: 'Designer Error', amount: 100, file: '' },
     ],
   };
 }
 
 function Row(props) {
-  const { row, setUnpaidFlag } = props;
+  const { row, setUnpaidFlag, setDeliverOrder } = props;
   const [open, setOpen] = React.useState(false);
   const classes = useRowStyles();
+  const BaseURL = useSelector(BASE_URL)
+  const dispatch = useDispatch()
+  console.log(BaseURL)
+  const DownloadFiles = () => {
+    for (let i = 0; i < row.files.length; i++) {
+      var a = document.createElement("a");
+      a.setAttribute('download', '');
+      a.setAttribute('target', '_blank');
+      a.setAttribute('href', `${BaseURL}uploads/${row.files[i]}`);
+      a.click()
+    }
 
+  }
   return (
     <React.Fragment>
-      <TableRow className={classes.root} onClick={() => setUnpaidFlag(true)}>
-        <TableCell>
+      <TableRow className={classes.root}>
+        <TableCell align="center">
           <IconButton aria-label="expand row" size="small" onClick={() => setOpen(!open)}>
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">
-          {row.name}
+        <TableCell component="th" scope="row" align="center">
+          {row.id}
         </TableCell>
-        <TableCell align="right">{row.calories}</TableCell>
-        <TableCell align="right">{row.fat}</TableCell>
-        <TableCell align="right">{row.carbs}</TableCell>
-        <TableCell align="right">{row.protein}</TableCell>
+        <TableCell align="center">{row.name}</TableCell>
+        <TableCell align="center">{row.created_at}</TableCell>
+        <TableCell align="center">{row.service_type}</TableCell>
+        <TableCell align="center">{row.description}</TableCell>
+        <TableCell align="center">
+          <Button onClick={DownloadFiles} className={classes.downloadBtn} variant="contained" color="secondary">
+            Files
+          </Button>
+        </TableCell>
+        <TableCell align="center">
+          <Button onClick={() => {setUnpaidFlag(true); dispatch(SetOrderToDeliver((row)))}} className={classes.downloadBtn} variant="contained" color="secondary">
+            Deliver
+          </Button>
+        </TableCell>
       </TableRow>
       <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
@@ -69,25 +109,56 @@ function Row(props) {
               <Table size="small" aria-label="purchases">
                 <TableHead>
                   <TableRow>
-                    <TableCell>Date</TableCell>
-                    <TableCell>Customer</TableCell>
-                    <TableCell align="right">Amount</TableCell>
-                    <TableCell align="right">Total price ($)</TableCell>
+                    <TableCell align="center">Date</TableCell>
+                    <TableCell align="center">Instructions</TableCell>
+                    <TableCell align="center">Dispute Status</TableCell>
+                    <TableCell align="center">Final Amount</TableCell>
                   </TableRow>
                 </TableHead>
                 <TableBody>
-                  {row.history.map((historyRow) => (
-                    <TableRow key={historyRow.date}>
-                      <TableCell component="th" scope="row">
-                        {historyRow.date}
-                      </TableCell>
-                      <TableCell>{historyRow.customerId}</TableCell>
-                      <TableCell align="right">{historyRow.amount}</TableCell>
-                      <TableCell align="right">
-                        {Math.round(historyRow.amount * row.price * 100) / 100}
-                      </TableCell>
-                    </TableRow>
-                  ))}
+                  {row.revisions.map((historyRow) => {
+                    if(historyRow !== ""){
+                      let date = new Date(historyRow.revisionAt)
+                      console.log(historyRow)
+                      return (
+                        <TableRow key={historyRow.date}>
+  
+                          <TableCell component="th" scope="row" align="center">
+                            {JSON.stringify(date)}
+                          </TableCell>
+  
+                          <TableCell align="center">{historyRow.designerMessage}</TableCell>
+                          
+                          <TableCell align="center">{historyRow.dispute}</TableCell>
+  
+                          <TableCell align="center">
+                            {
+                              historyRow.status == 'Changed from client' ? <div className="designer-increament">Rs.+{historyRow.amount}</div> : null
+                            }
+                            {
+                              historyRow.status == 'Designer Error' ? <div className="designer-decreament">Rs.-{historyRow.amount}</div> : null
+                            }
+                          </TableCell>
+  
+                        </TableRow>
+                      )
+                    }
+                    
+                  })}
+                  <TableRow>
+                    <TableCell component="th" scope="row" align="center">
+
+                    </TableCell>
+                    <TableCell component="th" scope="row" align="center">
+
+                    </TableCell>
+                    <TableCell component="th" scope="row" align="center">
+                      Total Earning
+                    </TableCell>
+                    <TableCell component="th" scope="row" align="center">
+                      100
+                    </TableCell>
+                  </TableRow>
                 </TableBody>
               </Table>
             </Box>
@@ -98,51 +169,31 @@ function Row(props) {
   );
 }
 
-Row.propTypes = {
-  row: PropTypes.shape({
-    calories: PropTypes.number.isRequired,
-    carbs: PropTypes.number.isRequired,
-    fat: PropTypes.number.isRequired,
-    history: PropTypes.arrayOf(
-      PropTypes.shape({
-        amount: PropTypes.number.isRequired,
-        customerId: PropTypes.string.isRequired,
-        date: PropTypes.string.isRequired,
-      }),
-    ).isRequired,
-    name: PropTypes.string.isRequired,
-    price: PropTypes.number.isRequired,
-    protein: PropTypes.number.isRequired,
-  }).isRequired,
-};
 
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0, 3.99),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3, 4.99),
-  createData('Eclair', 262, 16.0, 24, 6.0, 3.79),
-  createData('Cupcake', 305, 3.7, 67, 4.3, 2.5),
-  createData('Gingerbread', 356, 16.0, 49, 3.9, 1.5),
-];
-
-export default function CollapsibleTable({data}) {
-  const {setUnpaidFlag} = data
+export default function CollapsibleTable({ data }) {
+  const { setUnpaidFlag, rows, setDeliverOrder } = data
+  const results = rows.results
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell align="right">Calories</TableCell>
-            <TableCell align="right">Fat&nbsp;(g)</TableCell>
-            <TableCell align="right">Carbs&nbsp;(g)</TableCell>
-            <TableCell align="right">Protein&nbsp;(g)</TableCell>
+            <TableCell align="center">Order #</TableCell>
+            <TableCell align="center">Assign By</TableCell>
+            <TableCell align="center">Time Left</TableCell>
+            <TableCell align="center">Design Type</TableCell>
+            <TableCell align="center">Description</TableCell>
+            <TableCell align="center">Files</TableCell>
+            <TableCell align="center">Deliver</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <Row setUnpaidFlag={setUnpaidFlag} key={row.name} row={row} />
-          ))}
+          {results !== undefined ?
+          results.map((row) => (
+            <Row setUnpaidFlag={setUnpaidFlag} setDeliverOrder={setDeliverOrder} key={row.name} row={row} />
+          ))
+        : null}
         </TableBody>
       </Table>
     </TableContainer>

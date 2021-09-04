@@ -1,0 +1,17 @@
+.customerManagement-container{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    // margin-left: 5px;
+    width: 100%;
+    padding-top: 2%;
+}
+.customerManagement-innerContainer{
+    width: 98%;
+}
+.customerManagement-heading{
+    text-align: center;
+    color: $primary;
+    font-size: 30px;
+    margin-bottom: 1%;
+}

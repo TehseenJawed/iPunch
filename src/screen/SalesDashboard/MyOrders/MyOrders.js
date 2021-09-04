@@ -20,6 +20,9 @@ import OrderTable from './component/OrderTable'
 import InvoiceTable from './component/InvoiceTable'
 import OrderPopover from './component/OrderPopover'
 import InvoicePopover from './component/InvoicePopover'
+import {useSelector, useDispatch} from 'react-redux'
+import {ALL_ORDER_DATA} from '../../../redux/reducer/AgentDataReducer';
+import DeliverOrders from './component/DeliverOrder'
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -98,7 +101,7 @@ const RegisterClient = () => {
     const [invoiceFlag, setInvoiceFlag] = useState(false)
     const [orderFlag, setOrderFlag] = useState(false)
     const [orderData, setOrderData] = useState("")
-
+    const OrderData = useSelector(ALL_ORDER_DATA)
 
     const [tableData, setTableData] = useState("")
     const [fOrder,  setFOrder] = useState("")
@@ -110,13 +113,21 @@ const RegisterClient = () => {
     const [fTo,  setFTo] = useState(new Date('2020-08-18T21:11:54'))
 
 
-    const allOrders = [setTableData, setOrderFlag, setOrderData, setInvoiceFlag]
+    const allOrders = {setTableData, setOrderFlag, setOrderData, setInvoiceFlag, rows:OrderData.results}
     return (<div>
         <OrderPopover data={[orderFlag, setOrderFlag, orderData]}/>
         <InvoicePopover data={[invoiceFlag, setInvoiceFlag, orderData]}/>
         <div className="myOrder-mainContainer">
 
             <div className="myOrder-tableSort">
+
+            <div className="myOrder-table">
+                <div className="tableHeader">
+                    Orders to deliver
+                    
+                </div>
+                <DeliverOrders />
+            </div>
 
                 <div className="registerSort-text">
                     Filter

@@ -6,18 +6,29 @@ import {
 import ProtectedRoute from './route/protectedRoute'
 import SalesDashboard from '../components/SalesDashboard/salesDashboards';
 import DesignerDashboard from '../components/DesignerDashboard/designerDashboards';
+import CustomerDashboard from '../components/CustomerDashboard/customerDashboards'; 
+import AdminDashboard from '../components/AdminDashboard/adminDashboard'; 
 
 import Home from '../screen/Home/Home';
 import Login from '../screen/Login/login';
 import Signup from '../screen/Signup/signup'
-import SalesHome from '../screen/SalesDashboard/Dashboard/Dashboard'
-import GenerateForm from '../screen/SalesDashboard/GenerateForm/GenerateForm'
-import RegisterClient from '../screen/SalesDashboard/RegisterClient/RegisterClient'
-import MyOrders from '../screen/SalesDashboard/MyOrders/MyOrders'
-import CustomerManagement from '../screen/SalesDashboard/CustomerManagement/CustomerManagement'
-import UserProfile from '../screen/SalesDashboard/Profile/Profile'
+import SalesHome from '../screen/SalesDashboard/Dashboard/Dashboard';
+import GenerateForm from '../screen/SalesDashboard/GenerateForm/GenerateForm';
+import RegisterClient from '../screen/SalesDashboard/RegisterClient/RegisterClient';
+import MyOrders from '../screen/SalesDashboard/MyOrders/MyOrders';
+import CustomerManagement from '../screen/SalesDashboard/CustomerManagement/CustomerManagement';
+import UserProfile from '../screen/SalesDashboard/Profile/Profile';
 
-import DesignerDash from '../screen/DesignerDashboard/Dashboard/Dashboard' 
+import DesignerDash from '../screen/DesignerDashboard/Dashboard/Dashboard'; 
+import MyDesigns from '../screen/DesignerDashboard/MyDesigns/MyDesigns';
+import MyInvoices from '../screen/DesignerDashboard/MyInvoices/MyInvoices';
+
+import CustomerDash from '../screen/CustomerDashboard/Dashboard/Dashboard';
+
+import AdminDash from '../screen/AdminDashboard/Dashboard/Dashboard';
+import AdminGenerateForm from '../screen/AdminDashboard/GenerateForm/GenerateForm';
+import AdminOrders from '../screen/AdminDashboard/MyOrders/MyOrders';
+import AllInvoices from '../screen/AdminDashboard/AllInvoices/AllInvoices';
 
 function FunctionalRoute() {
     return (
@@ -96,19 +107,67 @@ function FunctionalRoute() {
                 </ProtectedRoute>
             </Route>
 
-            <Route exact path="/ip-designer/generate-form">
+            <Route exact path="/ip-designer/my-designs">
                 <ProtectedRoute>
                     <DesignerDashboard>
-                        <DesignerDash />
+                        <MyDesigns />
                     </DesignerDashboard>
                 </ProtectedRoute>
             </Route>
 
-            <Route exact path="/ip-designer/register-client">
+            <Route exact path="/ip-designer/my-invoices">
                 <ProtectedRoute>
                     <DesignerDashboard>
-                        <DesignerDash />
+                        <MyInvoices />
                     </DesignerDashboard>
+                </ProtectedRoute>
+            </Route>
+
+            <Route exact path="/ip-customer/dashboard">
+                <ProtectedRoute>
+                    <CustomerDashboard>
+                        <CustomerDash />
+                    </CustomerDashboard>
+                </ProtectedRoute>
+            </Route>
+            
+            <Route exact path="/ip-admin/dashboard">
+                <ProtectedRoute>
+                    <AdminDashboard>
+                        <AdminDash />
+                    </AdminDashboard>
+                </ProtectedRoute>
+            </Route>
+
+            <Route exact path="/ip-admin/generate-form">
+                <ProtectedRoute>
+                    <AdminDashboard>
+                        <AdminGenerateForm />
+                    </AdminDashboard>
+                </ProtectedRoute>
+            </Route>
+
+            <Route exact path="/ip-admin/register-client">
+                <ProtectedRoute>
+                    <AdminDashboard>
+                        <AdminOrders />
+                    </AdminDashboard>
+                </ProtectedRoute>
+            </Route>
+
+            <Route exact path="/ip-admin/all-orders">
+                <ProtectedRoute>
+                    <AdminDashboard>
+                        <AdminOrders />
+                    </AdminDashboard>
+                </ProtectedRoute>
+            </Route>
+
+            <Route exact path="/ip-admin/all-invoices">
+                <ProtectedRoute>
+                    <AdminDashboard>
+                        <AllInvoices />
+                    </AdminDashboard>
                 </ProtectedRoute>
             </Route>
 

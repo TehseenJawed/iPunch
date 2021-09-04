@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
@@ -6,6 +6,11 @@ import Fade from '@material-ui/core/Fade';
 import Image from '../../../../assets/brand/logo.png'
 import Button from '@material-ui/core/Button';
 import Icon from '@material-ui/core/Icon';
+import TextField from '@material-ui/core/TextField';
+import DropZone from '../../../../components/Dropzone/Dropzone';
+import {DeliverOrder} from '../../../../redux/action/DesignerAction';
+import {ADD_ORDER_TO_DELIVER} from '../../../../redux/reducer/DesignerReducer';
+import {useSelector, useDispatch} from 'react-redux';
 
 const useStyles = makeStyles((theme) => ({
   modal: {
@@ -16,50 +21,69 @@ const useStyles = makeStyles((theme) => ({
   paper: {
     backgroundColor: theme.palette.background.paper,
     border: 'none',
-    width:'70vh',
-    height:'600px',
-    borderRadius:10,
-    display:'flex',
-    justifyContent:'center',
-    // alignItems:'center',
-    flexWrap:'wrap',
-    flexDirection:'row'
+    width: '70vh',
+    height: '600px',
+    borderRadius: 10,
+    display: 'flex',
+    justifyContent: 'center',
+    flexWrap: 'wrap',
+    flexDirection: 'row'
   },
-  innerPaper1:{
-    width:'65%',
-    background:'#626FE4',
-    borderRadius:10,
-    color:'white'
+  innerPaper1: {
+    width: '100%',
+    height: 170,
+    background: '#F5365C',
+    borderRadius: 10,
+    color: 'white'
   },
-  innerPaper2:{
-    width:'35%'
-  },
-  headText:{
-    fontSize:35,
-    margin:15,
-    marginBottom:35
-  },
-  descText:{
-    fontSize:15,
-    margin:15
-  },
-  orderImage:{
-    width:200
+  orderImage: {
+    width: 200
   },
   button: {
     margin: theme.spacing(1),
-    width:'90%',
-    marginLeft:'5%'
+    width: '90%',
+    marginLeft: '5%'
   },
+  textField: {
+    width: 400,
+  },
+  innerPaper2: {
+    display: 'flex',
+    // justifyContent:'center',
+    alignItems: 'center',
+    flexDirection: 'column',
+  }
 }));
 
-export default function TransitionsModal({data}) {
+export default function TransitionsModal({ data }) {
   const classes = useStyles();
-  const [ unpaidFlag, setUnpaidFlag, orderData] = data
-  console.log(data)
+  const [unpaidFlag, setUnpaidFlag, orderData ] = data
+  const [upload, setUpload] = useState("")
+  const dispatch = useDispatch()
+  const [ message, setMessage] = useState("")
   const handleClose = () => {
     setUnpaidFlag(false);
   };
+
+  const Deliver = () => {
+    var newObj = new FormData()
+
+    upload.forEach((item) => newObj.append("deliverFiles", item))
+    newObj.append('designerMessage',message);
+    newObj.append('orderStatus',"Review");
+    newObj.append('deliverAt',new Date().getTime());
+    // const newObj = { 
+    //   deliverFiles:upload,
+    //   deliverAt:new Date().getTime(), 
+    //   orderStatus:"Review",
+    //   designerMessage:message,
+    // }
+
+    console.log(newObj)
+    
+    dispatch(DeliverOrder(newObj))
+    setUnpaidFlag(false)
+  }
 
   return (
     <div>
@@ -78,28 +102,31 @@ export default function TransitionsModal({data}) {
         <Fade in={unpaidFlag}>
           <div className={classes.paper}>
             <div className={classes.innerPaper1}>
-              {/* <h1 className={classes.headText}>#{orderData.id}</h1>
-              <h1 className={classes.descText}>Customer Name: {orderData.CustomerName}</h1>
-              <h1 className={classes.descText}>Amount: ${orderData.amount}</h1>
-              <h1 className={classes.descText}>Payment Status: <span className={orderData.paymentStatus == 'Paid' ? "invoice-paid" : "invoice-notpaid"}>{orderData.paymentStatus}</span></h1>
-              <h1 className={classes.descText}>Created Date: {orderData.createdDate}</h1>
-              <h1 className={classes.descText}>Paid Date: {orderData.paidDate}</h1> */}
-
-        {
-            true ? null :
-            <Button
-        variant="contained"
-        color="primary"
-        className={classes.button}
-        endIcon={<Icon>send</Icon>}
-      >
-        Resend Payment Link
-      </Button>
-        }
-              
+              <DropZone upload={upload} setUpload={setUpload} />
             </div>
             <div className={classes.innerPaper2}>
-              <img className={classes.orderImage} src={Image} alt="Design" />
+              <TextField
+                id="outlined-multiline-static"
+                label="Multiline"
+                className={classes.textField}
+                value={message}
+                onChange={(e) => setMessage(e.target.value)}
+                multiline
+                rows={4}
+                defaultValue="Default Value"
+                variant="outlined"
+              />
+
+              <Button
+                variant="contained"
+                color="secondary"
+                className={classes.button}
+                endIcon={<Icon>send</Icon>}
+                onClick={Deliver}
+              >
+                Deliver
+              </Button>
+
             </div>
           </div>
         </Fade>

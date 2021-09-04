@@ -95,7 +95,7 @@ const rows = [
 ];
 
 export default function DataTable({data}) {
-    const [setTableData, setOrderFlag, setOrderData, setInvoiceFlag] = data
+    const {setTableData, setOrderFlag, setOrderData, setInvoiceFlag} = data
   return (
     <div style={{ height: 400, width: '100%', backgroundColor:'white', textAlign: "center" }}>
       <DataGrid

@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux'
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
@@ -19,6 +20,12 @@ import {
 } from '@material-ui/pickers';
 import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles } from '@material-ui/core/styles';
+import { LOADING, LOGIN_DATA, STATE } from '../../../redux/reducer/AuthReducer'
+import { ALL_CLIENT_FILTERDATA } from '../../../redux/reducer/AgentDataReducer'
+import { SetAllClients_Data, FilterClientByEmail, FilterClientByInterest, FilterClientByState } from '../../../redux/action/AgentAction'
+import { Generate_NewClient } from '../../../redux/action/AuthAction'
+import CircularProgress from '../../../components/CircularProgress/circularProgress'
+import { et } from 'date-fns/locale';
 
 const useStyles = makeStyles((theme) => ({
     root: {
@@ -106,9 +113,15 @@ const RegisterClient = () => {
     const [fFrom, setFFrom] = useState(new Date('2020-08-18T21:11:54'))
     const [fTo, setFTo] = useState(new Date('2020-08-18T21:11:54'))
 
+    const LoginData = useSelector(LOGIN_DATA)
+    const ClientData = useSelector(ALL_CLIENT_FILTERDATA)
+    const loadingSelector = useSelector(LOADING)
+    const State = useSelector(STATE)
+    const data = new Date().getTime()
+    const dispatch = useDispatch()
 
     const columns = [
-        { id: 'name', label: 'Client Name', align: 'center', minWidth: 40 },
+        { id: 'username', label: 'Client Name', align: 'center', minWidth: 40 },
         {
             id: 'state',
             label: 'State',
@@ -145,7 +158,7 @@ const RegisterClient = () => {
             format: (value) => value.toFixed(2),
         },
         {
-            id: 'date',
+            id: 'created_at',
             label: 'Created Date',
             minWidth: 170,
             align: 'center',
@@ -154,19 +167,56 @@ const RegisterClient = () => {
     ];
 
     function createData(name, state, email, orders, phone, interest, date) {
-        return { name, state, email, orders, phone, interest, date};
+        return { name, state, email, orders, phone, interest, date };
     }
 
-    const rows = [
-        createData('Tehseen Jawed', 'Ohio', 'tehseenjawed1@gmail.com', 51, '(785)-814-0146', 'Interested', '05/04/2021'),
-        createData('Tehseen Jawed', 'Ohio', 'tehseenjawed1@gmail.com', 51, '(785)-814-0146', 'Interested', '05/04/2021'),
-        createData('Tehseen Jawed', 'Ohio', 'tehseenjawed1@gmail.com', 51, '(785)-814-0146', 'Interested', '05/04/2021'),
-    ];
+    const rows = ClientData.results
 
-    const clientData =[
+    const clientData = [
         rows,
-        columns
+        columns,
     ]
+
+    const FilterByEmail = (e) => {
+        setFEmail(e.target.value)
+        dispatch(FilterClientByEmail({ email: e.target.value }))
+    }
+
+
+    const RegisterClient = () => {
+        const newObj = {
+            username: name,
+            state,
+            email,
+            agent: LoginData.user.id,
+            interest: intrust,
+            phone,
+        }
+        dispatch(Generate_NewClient(newObj))
+        dispatch(SetAllClients_Data())
+    }
+
+    const FilterByInterest = (e) => {
+        setFEmail("")
+        setFState("")
+        setFInterest(e.target.value)
+        dispatch(FilterClientByInterest(e.target.value))
+    }
+
+    const FilterByState = (e) => {
+        setFEmail("")
+        setFInterest("")
+        setFState(e.target.value)
+        dispatch(FilterClientByState(e.target.value))
+    }
+
+    const Reset = () => {
+        setFEmail("")
+        setFInterest("")
+        setFState("")
+        dispatch(SetAllClients_Data())
+    }
+    console.log("===> ", rows)
     return (
         <div className="registerClient-mainContainer">
             <div className="registerClient-container">
@@ -235,9 +285,10 @@ const RegisterClient = () => {
                                 <MenuItem value="" disabled>
                                     State
                                 </MenuItem>
-                                <MenuItem value={"Tehseen Jawed"}>Tehseen Jawed</MenuItem>
-                                <MenuItem value={"Tehseen Jawed"}>Tehseen Jawed</MenuItem>
-                                <MenuItem value={"Tehseen Jawed"}>Tehseen Jawed</MenuItem>
+
+                                {State.results.map((v, i) =>
+                                    <MenuItem value={v.state}>{v.state}</MenuItem>
+                                )}
                             </Select>
                             <FormHelperText>State</FormHelperText>
                         </FormControl>
@@ -265,15 +316,21 @@ const RegisterClient = () => {
 
                 </div>
 
-                <div className="registerClient-subContainer">
-                    <Button variant="contained"
-                        className="salesOrder-Textfield3"
-                        style={{ backgroundColor: '#626FE4', color: 'white' }}
-                        endIcon={<Icon>send</Icon>}
-                    >
-                        Register Client
-                    </Button>
-                </div>
+                {loadingSelector ?
+
+                    <CircularProgress />
+                    :
+                    <div className="registerClient-subContainer">
+                        <Button variant="contained"
+                            className="salesOrder-Textfield3"
+                            style={{ backgroundColor: '#626FE4', color: 'white' }}
+                            onClick={RegisterClient}
+                            endIcon={<Icon>send</Icon>}
+                        >
+                            Register Client
+                        </Button>
+                    </div>
+                }
 
             </div>
 
@@ -290,7 +347,7 @@ const RegisterClient = () => {
                         className="registerClient-tableSelect"
                         id="outlined-adornment-amount"
                         value={fEmail}
-                        onChange={(e) => setFEmail(e.target.value)}
+                        onChange={FilterByEmail}
                         startAdornment={<InputAdornment position="start">
                             <AlternateEmailIcon style={{ fill: "#626FE4" }} />
                         </InputAdornment>}
@@ -299,11 +356,11 @@ const RegisterClient = () => {
                 </FormControl>
 
                 <CssFormControl variant="outlined">
-                    <FormHelperText style={{ color: '#626FE4' }}>Intrust</FormHelperText>
+                    <FormHelperText style={{ color: '#626FE4' }}>Interest</FormHelperText>
                     <Select
                         className="registerClient-tableSelect"
                         value={fInterest}
-                        onChange={(e) => setFInterest(e.target.value)}
+                        onChange={FilterByInterest}
                         displayEmpty
                         inputProps={{ 'aria-label': 'Without label' }}
                     >
@@ -322,16 +379,18 @@ const RegisterClient = () => {
                     <Select
                         className="registerClient-tableSelect"
                         value={fState}
-                        onChange={(e) => setFState(e.target.value)}
+                        onChange={FilterByState}
                         displayEmpty
                         inputProps={{ 'aria-label': 'Without label' }}
                     >
                         <MenuItem value="" disabled>
                             State
                         </MenuItem>
-                        <MenuItem value={"Intrusted"}>Intrusted</MenuItem>
-                        <MenuItem value={"Contact Later"}>Contact Later</MenuItem>
-                        <MenuItem value={"Not Interested"}>Not Interested</MenuItem>
+                        {State.results.map((v, i) =>
+                            <MenuItem value={v.state}>{v.state}</MenuItem>
+                        )}
+
+
                     </Select>
                 </CssFormControl>
 
@@ -371,7 +430,7 @@ const RegisterClient = () => {
 
                 <Button className={classes.filterBtn} variant="contained" href="#contained-buttons"> Filter </Button>
 
-                <Button className={classes.filterBtn} variant="contained" href="#contained-buttons"> Reset </Button>
+                <Button className={classes.filterBtn} variant="contained" href="#contained-buttons" onClick={Reset}> Reset </Button>
 
             </div>
             <div className="registerClient-table">
@@ -379,7 +438,7 @@ const RegisterClient = () => {
                     All Clients
                     <button className="table-btn">View</button>
                 </div>
-                <Table data={clientData}/>
+                <Table data={clientData} />
             </div>
         </div>
     )

@@ -2,7 +2,6 @@ import React, {useState, useEffect} from 'react';
 import {useSelector, useDispatch} from 'react-redux';
 import CircularProgress from '../../components/CircularProgress/circularProgress'
 import {Link, Redirect} from 'react-router-dom'
-import TextField from '@material-ui/core/TextField';
 import Button from '@material-ui/core/Button';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import AccountCircle from '@material-ui/icons/AccountCircle';
@@ -12,65 +11,30 @@ import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import CompanyLogo from '../../assets/brand/logo.png'
 import LockOpenIcon from '@material-ui/icons/LockOpen';
-import {LOGIN_DATA} from '../../redux/reducer/AuthReducer';
-import {ChangeSalesLogin, ChangeBaseURL} from '../../redux/action/AuthAction'
+import {LOGIN_DATA, LOGIN_FLAG, LOADING} from '../../redux/reducer/AuthReducer';
+import {ChangeSalesLogin, LoginFunction} from '../../redux/action/AuthAction'
 import SnackBar from '../../components/SnackBar/snackBar';
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [pass, setPass] = useState("");
-    const [loader, setLoader] = useState(false)
-    const [redirect, setRedirect] = useState(false)
     const [passError, setPassError] = useState(false)
     const [snackBar, setSnackBar] = useState(false)
     const [snackObj, setSnackObj] = useState({})
 
+    const loadingSelector = useSelector(LOADING)
+    const LoginFlag = useSelector(LOGIN_FLAG)
     const LoginData = useSelector(LOGIN_DATA)
-    console.log(LoginData)
     const dispatch = useDispatch()
-    
+    console.log(LoginData)
     const Signin = () => {
-        setLoader(true)
         const newObj = {
             email,
-            pass
+            password:pass
         }
-
-        if(email == "sales-ipunch@gmail.com" && pass == "test12345"){
-            const snack = {
-                variant:"success",
-                text:"You haved Loggedin successfully"
-            }
-            setSnackObj(snack)
-            setSnackBar(true)
-            setTimeout(() => {
-                dispatch(ChangeSalesLogin({id:1, name:"Tehseen Jawed", userType:"Sales"}))
-                setRedirect(true)
-            },2000)
-        }
-        else if(email == "designer-ipunch@gmail.com" && pass == "test12345"){
-            const snack = {
-                variant:"success",
-                text:"You haved Loggedin successfully"
-            }
-            setSnackObj(snack)
-            setSnackBar(true)
-            setTimeout(() => {
-                dispatch(ChangeSalesLogin({id:1, name:"Tehseen Jawed", userType:"Designer"}))
-                setRedirect(true)
-            },2000)
-        }
-
-        else{
-            const snack = {
-                variant:"error",
-                text:"Your Email or password is incorrect."
-            }
-            setSnackObj(snack)
-            setSnackBar(true)
-            setLoader(false)
-        }
+        dispatch(LoginFunction(newObj))
     }
+     
     const snackData = {
         snackBar, 
         setSnackBar,
@@ -85,23 +49,31 @@ const Login = () => {
             setPassError(true)
         }
     },[email])
-
+    
     return (
         <div className="login-container">
-            {redirect === true && LoginData.userType == "Sales" ? <Redirect to="/ip-sales/dashboard" /> : null}
-            {redirect === true && LoginData.userType == "Designer" ? <Redirect to="/ip-designer/dashboard" /> : null}
+
+            {LoginFlag === true && LoginData.user.role == "Sales" ? <Redirect to="/ip-sales/dashboard" /> : null}
+            {LoginFlag === true && LoginData.user.role == "Designer" ? <Redirect to="/ip-designer/dashboard" /> : null}
+            {LoginFlag === true && LoginData.user.role == "Customer" ? <Redirect to="/ip-customer/dashboard" /> : null}
+            {LoginFlag === true && LoginData.user.role == "Admin" ? <Redirect to="/ip-admin/dashboard" /> : null}
             
             <div className="login-paper">
+
                 <div className="login-indecator">
                     <LockOpenIcon style={{fill: "white"}}/>
                     <span>Login</span>
                 </div>
+
                 <SnackBar data={snackData}/>
-                {loader ?
+                {loadingSelector ?
+
                 <div className="login-loaderContainer">
                     <CircularProgress />
                 </div>
+
                 :
+
                 <form className="login-form" noValidate autoComplete="off">
                 <div className="logo-container">
                     <img className="login-logo" src={CompanyLogo} alt="Logo" />
@@ -153,6 +125,7 @@ const Login = () => {
                     </div>
                     
                 </form>
+
                 }
             </div>
         </div>

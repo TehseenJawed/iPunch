@@ -4,125 +4,157 @@ import { makeStyles } from '@material-ui/styles';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
 import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
 import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
+import {useSelector, useDispatch} from 'react-redux'
+import {ALLDeliverOrders} from '../../../../redux/reducer/AgentDataReducer';
+import { BASE_URL } from '../../../../redux/reducer/AuthReducer';
+import { Button } from '@material-ui/core';
+import Icon from '@material-ui/core/Icon';
 
-const columns = [
-  {
-    field: 'id',
-    headerName: '#',
-    width: 90,
-    align: 'center',
-    headerAlign: 'center'
-  },
-  {
-    field: 'CustomerName',
-    headerName: 'Customer Name',
-    headerAlign: 'center',
-    align: 'center',
-    width: 170,
-    editable: false,
-  },
-  {
-    field: 'Amount',
-    headerName: 'Amount',
-    headerAlign: 'center',
-    align: 'center',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-    renderCell: (params) => {
-      return (
-        <div className="d-flex justify-content-between align-items-center" style={{ cursor: "pointer", display: 'flex', alignItems: 'center' }}>
-          <MonetizationOnIcon /> {` ${params.getValue(params.id, 'amount') || ''}`}
-        </div>
-      );
-    },
-  },
-  {
-    field: 'status',
-    headerName: 'Status',
-    headerAlign: 'center',
-    align: 'center',
-    description: 'This column has a value getter and is not sortable.',
-    sortable: false,
-    width: 160,
-    type: 'number',
-    renderCell: (params) => {
-      if (params.row.status == 'Delivered') {
-        return (
-          <div className="d-flex justify-content-between align-items-center" style={{ cursor: "pointer", display: 'flex', alignItems: 'center' }}>
-            <ThumbUpAltIcon /> {` ${params.getValue(params.id, 'status') || ''}`}
-          </div>
-        )
-      }
-      else if (params.row.status == 'Not Delivered') {
-        return (
-          <div className="d-flex justify-content-between align-items-center" style={{ cursor: "pointer", display: 'flex', alignItems: 'center' }}>
-             {` ${params.getValue(params.id, 'status') || ''}`}  <ThumbDownAltIcon />
-          </div>
-        )
-      }
-    },
-  },
-  {
-    field: 'orderStatus',
-    headerName: 'Order Status',
-    headerAlign: 'center',
-    align: 'center',
-    type: 'number',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'receiveDate',
-    headerName: 'Receive Date',
-    headerAlign: 'center',
-    align: 'center',
-    type: 'number',
-    width: 150,
-    editable: false,
-  },
-  {
-    field: 'deliveryDate',
-    headerName: 'Delivered Date',
-    headerAlign: 'center',
-    align: 'center',
-    type: 'number',
-    width: 160,
-    editable: false,
-  },
-];
-
-const rows = [
-  { id: 1, CustomerName: 'Snow', amount: 50, status: 'Delivered', orderStatus: 'Paid', receiveDate: '5/April/2020', deliveryDate: '6/April/2020' },
-  { id: 2, CustomerName: 'Lannister', amount: 270, status: 'Not Delivered', orderStatus: 'Unpaid', receiveDate: '5/April/2020', deliveryDate: '6/April/2020' },
-  { id: 3, CustomerName: 'Lannister', amount: 1041, status: 'Delivered', orderStatus: 'Cancelled', receiveDate: '5/April/2020', deliveryDate: '6/April/2020' },
-  { id: 4, CustomerName: 'Stark', amount: 380, status: 'Delivered', orderStatus: 'Unpaid', receiveDate: '5/April/2020', deliveryDate: '6/April/2020' },
-  { id: 5, CustomerName: 'Targaryen', amount: 1550, status: 'Not Delivered', orderStatus: 'Paid', receiveDate: '5/April/2020', deliveryDate: '6/April/2020' },
-  { id: 6, CustomerName: 'Melisandre', amount: 2000, status: 'Not Delivered', orderStatus: 'Paid', receiveDate: '5/April/2020', deliveryDate: '6/April/2020' },
-  { id: 7, CustomerName: 'Clifford', amount: 100, status: 'Not Delivered', orderStatus: 'Updated', receiveDate: '5/April/2020', deliveryDate: '6/April/2020' },
-  { id: 8, CustomerName: 'Frances', amount: 130, status: 'Delivered', orderStatus: 'Updated', receiveDate: '5/April/2020', deliveryDate: '6/April/2020' },
-  { id: 9, CustomerName: 'Roxie', amount: 1100, status: 'Not Delivered', orderStatus: 'Unpaid', receiveDate: '5/April/2020', deliveryDate: '6/April/2020' },
-];
 
 export default function DataTable({ data }) {
   const classes = useStyles();
-  const [setTableData, setOrderFlag, setOrderData] = data
+  const rows =useSelector(ALLDeliverOrders)
+  const BaseURL = useSelector(BASE_URL)
+
+  const columns = [
+    {
+      field: 'Customer',
+      headerName: 'Customer',
+      headerAlign: 'center',
+      align: 'center',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 160,
+      renderCell: (params) => {
+        console.log(params.row.revisions.length)
+        return (
+          <div className="d-flex justify-content-between align-items-center" style={{ cursor: "pointer", display: 'flex', alignItems: 'center' }}>
+            {params.row.customer.username}
+          </div>
+        );
+      },
+    },
+    {
+      field: 'revision',
+      headerName: 'Revision',
+      headerAlign: 'center',
+      align: 'center',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 160,
+      renderCell: (params) => {
+        return (
+          <div className="d-flex justify-content-between align-items-center" style={{ cursor: "pointer", display: 'flex', alignItems: 'center' }}>
+            {(params.row.revisions.length)-1}
+          </div>
+        );
+      },
+    },
+    {
+      field: 'Amount',
+      headerName: 'Amount',
+      headerAlign: 'center',
+      align: 'center',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 160,
+      renderCell: (params) => {
+        return (
+          <div className="d-flex justify-content-between align-items-center" style={{ cursor: "pointer", display: 'flex', alignItems: 'center' }}>
+            <MonetizationOnIcon /> {` ${params.getValue(params.id, 'amount') || ''}`}
+          </div>
+        );
+      },
+    },
+    {
+      field: 'files',
+        headerName: 'Files',
+        headerAlign: 'center', 
+        align: 'center',
+        description: 'This column has a value getter and is not sortable.',
+        sortable: false,
+        width: 140,
+        type: 'number',
+        renderCell: (params) => {
+  
+          const DownloadFiles = () => {
+            for (let i = 0; i < params.row.files.length; i++) {
+              var a = document.createElement("a");
+              a.setAttribute('download', '');
+              a.setAttribute('target', '_blank');
+              a.setAttribute('href', `${BaseURL}uploads/${params.row.files[i]}`);
+              a.click()
+            }
+  
+          }
+  
+          return (
+            <Button onClick={DownloadFiles} variant="contained" color="secondary">
+              Download
+            </Button>
+          )
+          // params.row.agent.username
+        }
+    },
+    {
+      field: 'paymentStatus',
+      headerName: 'Payment',
+      headerAlign: 'center',
+      align: 'center',
+      type: 'number',
+      width: 150,
+      editable: false,
+    },
+    {
+      field: 'serviceType',
+      headerName: 'Service',
+      headerAlign: 'center',
+      align: 'center',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 160,
+    },
+    {
+      field: 'updatedAt',
+      headerName: 'Delivered Date',
+      headerAlign: 'center',
+      align: 'center',
+      type: 'number',
+      width: 160,
+      editable: false,
+    },
+    {
+      field: 'revision',
+      headerName: 'Order Status',
+      headerAlign: 'center',
+      align: 'center',
+      description: 'This column has a value getter and is not sortable.',
+      sortable: false,
+      width: 160,
+      renderCell: (params) => {
+        return (
+          <div className="d-flex justify-content-between align-items-center" style={{ cursor: "pointer", display: 'flex', alignItems: 'center' }}>
+            {params.row.orderStatus}
+          </div>
+        );
+      },
+  },
+  ];
+
+  console.log("It is row ===> ",rows.results)
   return (
     <div className={classes.root} style={{ height: 400, width: '100%', backgroundColor: 'white', textAlign: "center" }}>
       <DataGrid
-        rows={rows}
+        rows={rows.results}
         columns={columns}
         pageSize={5}
         onCellDoubleClick={(e) => {
-          setOrderData(e.row);
-          setOrderFlag(true)
         }}
         onSelectionModelChange={(e) => {
-          const selectedIDs = new Set(e);
-          const selectedRowData = rows.filter((row) =>
-            selectedIDs.has(row.id)
-          )
-          setTableData(selectedRowData);
+          // const selectedIDs = new Set(e);
+          // const selectedRowData = rows.filter((row) =>
+          //   selectedIDs.has(row.id)
+          // )
         }}
 
         getCellClassName={(params) => {
@@ -130,19 +162,19 @@ export default function DataTable({ data }) {
             return 'order-amount';
           }
 
-          if (params.field === 'status') {
+          if (params.field === 'order_status') {
             switch (params.value) {
-              case 'Delivered':
+              case 'Assigned':
                 return 'order-delivered'
-              case 'Not Delivered':
+              case 'Not Assign':
                 return 'order-notdelivered'
             }
           }
-          if (params.field === 'orderStatus') {
+          if (params.field === 'payment_status') {
             switch (params.value) {
               case 'Paid':
                 return 'order-delivered'
-              case 'Unpaid':
+              case 'Not Paid':
                 return 'order-notdelivered'
               case 'Cancelled':
                 return 'order-cancelled'
