@@ -23,7 +23,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import {LOADING, LOGIN_DATA, INVOICE_ID, SERVICES, UPDATE_INVOICE_DATA} from '../../../redux/reducer/AuthReducer'
+import {LOADING, LOGIN_DATA, INVOICE_ID, SERVICES, UPDATE_INVOICE_DATA, BASE_URL} from '../../../redux/reducer/AuthReducer'
 import {ALL_CUSTOMER_DATA} from '../../../redux/reducer/AgentDataReducer'
 import {Order_By_Agent, Create_Customer_Account, Generate_InvoiceBy_Agent} from '../../../redux/action/AuthAction'
 import {SetAllCustomer_Data} from '../../../redux/action/AgentAction'
@@ -97,8 +97,7 @@ function TabPanel(props) {
     const ClientData = useSelector(ALL_CUSTOMER_DATA)
     const Services = useSelector(SERVICES)
     const InvoiceData = useSelector(UPDATE_INVOICE_DATA)
-
-    console.log("InvoiceData is here ",InvoiceData)
+    const BaseURL = useSelector(BASE_URL)
 
     const [client, setClient] = useState("")
     const [service, setService] = useState("")
@@ -191,7 +190,7 @@ function TabPanel(props) {
     }
     
     useEffect(() => {
-        if(InvoiceId !== "") setInvoiceLink(`http://localhost:3000/paypal/${InvoiceId}`)
+        if(InvoiceId !== "") setInvoiceLink(`${BaseURL}paypal/${InvoiceId}`)
     },[InvoiceId])
     return (
       <div className={classes.root}>

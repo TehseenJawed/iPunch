@@ -16,7 +16,7 @@ import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
 import { ALL_CUSTOMER_DATA, ALL_ORDER_DATA, AllInvoiceData } from '../../../../redux/reducer/AgentDataReducer'
-import { LOGIN_DATA } from '../../../../redux/reducer/AuthReducer'
+import { LOGIN_DATA, BASE_URL } from '../../../../redux/reducer/AuthReducer'
 import {useSelector, useDispatch} from 'react-redux'
 import EditProfile from './EditProfilePopover'
 
@@ -34,6 +34,7 @@ function Row(props) {
   const [open, setOpen] = React.useState(false);
   const [profileFlag, setPrifleFlag] = useState(false)
   const [editProfileData, setEditProfileData] = useState("")
+  const BaseURL = useSelector(BASE_URL)
   const classes = useRowStyles();
 
   function copyToClipboard(text) {
@@ -62,7 +63,7 @@ function Row(props) {
           $ {row.amount}
         </TableCell>
         <TableCell align="center">
-          <Button onClick={() => copyToClipboard(`http://localhost:3000/paypal/${row.id}`)}>COPY</Button>
+          <Button onClick={() => copyToClipboard(`${BaseURL}/paypal/${row.id}`)}>COPY</Button>
         </TableCell>
       </TableRow>
       {/* <TableRow>
