@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import CompanyLogo from '../../assets/brand/logo.png'
+import CompanyLogo from '../../assets/brand/logo.svg'
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PersonIcon from '@material-ui/icons/Person';
 import Profile from '../../assets/brand/user.jpg'
@@ -18,11 +18,12 @@ import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import FlipCameraIosIcon from '@material-ui/icons/FlipCameraIos';
 import FormatPaintIcon from '@material-ui/icons/FormatPaint';
 import {useSelector, useDispatch} from 'react-redux';
-import {LOGIN_FLAG} from '../../redux/reducer/AuthReducer'
+import {LOGIN_FLAG, LOGIN_DATA} from '../../redux/reducer/AuthReducer'
 
 const DesignerDashboard = ({ children }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const LoginFlag = useSelector(LOGIN_FLAG)
+    const LoginData = useSelector(LOGIN_DATA)
     console.log("It is data",LoginFlag)
     const DropObj = {
         anchorEl, 
@@ -40,7 +41,6 @@ const DesignerDashboard = ({ children }) => {
 
                 <div className="designerLogo-container">
                     <img className="sales-logo" src={CompanyLogo} alt="Logo" />
-                    <div className="sales-logoText">Tehseen Jawed</div>
                 </div>
 
                 <Link to="/ip-designer/dashboard" className="salesSidemenu-item">
@@ -64,11 +64,11 @@ const DesignerDashboard = ({ children }) => {
             
             <div className="designTop-menu">
                 <div className="salesTop-Header">
-                    <div className="salesTop-Email">Email US: </div>
-                    <div className="salesTop-Email">tehseenjawed1@gmail.com</div>
+                    <div className="salesTop-Email">WELCOME {LoginData.user.username} </div>
+                    <div className="salesTop-Email"></div>
                     <div className="designerTop-Avatar" onClick={handleClick}>
                         <Avatar alt="Cindy Baker" src={Profile} />
-                        <div>Tehseen Jawed</div>
+                        <div> {LoginData.user.email}</div>
                     </div>
                 </div>
                 <DropMenu data={DropObj} />

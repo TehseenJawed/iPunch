@@ -1,14 +1,16 @@
 const initialState = {
-    baseUrl: "http://localhost:3001/",
+    // baseUrl: "https://sleepy-chamber-98905.herokuapp.com/",
+    baseUrl: "http://localhost:3005/",
     invoice_id: "",
     services:[],
     state:[],
     signupFlag: false,
-    loginFlag: true,
+    loginFlag: false,
     loginData: {user:{}},
     snackFlag: false,
     snackObj: {},
     loading: false,
+    invoiceData:{}
 }
 
 
@@ -23,6 +25,7 @@ export const SIGNUP_FLAG = (state) => state.AuthReducer.signupFlag
 export const LOGIN_DATA = (state) => state.AuthReducer.loginData
 export const SNACK_TEXT = (state) => state.AuthReducer.snackObj
 export const SNACK_FLAG = (state) => state.AuthReducer.snackFlag
+export const UPDATE_INVOICE_DATA = (state) => state.AuthReducer.invoiceData
 
 export default function AuthReducer(state = initialState, action) {
     // console.log("It is sstate ===> ",state)
@@ -30,13 +33,18 @@ export default function AuthReducer(state = initialState, action) {
         case "Loading":
             return {
                 ...state,
-                signupFlag: action.load,
-                loading:false
+                // signupFlag: action.load,
+                loading:action.load
             }
         case "InvoiceID":
             return {
                 ...state,
                 invoice_id: action.load,
+            }
+        case "UpdateInvoiceData":
+            return {
+                ...state,
+                invoiceData: action.load,
             }
         case "AddServices":
             return {

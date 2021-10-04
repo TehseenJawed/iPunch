@@ -231,3 +231,20 @@ export const CreateNewState = (load) => {
     }
   }
 };
+
+export const CreateNewService = (load) => {
+  console.log("===> ",load)
+  return async (dispatch, state) => {
+    try{
+      await dispatch(Loading(true))
+      const response =await axios.post(`${state().AuthReducer.baseUrl}api/service`, load)
+      dispatch(ChangeSnackData({text:"New State has created successfully", variant:"success"}))
+      dispatch(ChangeSnackFlag(true))
+      
+    }
+    catch(err) {
+      dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+      dispatch(ChangeSnackFlag(true))
+    }
+  }
+};

@@ -23,7 +23,7 @@ import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
 import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
-import {LOADING, LOGIN_DATA, INVOICE_ID, SERVICES} from '../../../redux/reducer/AuthReducer'
+import {LOADING, LOGIN_DATA, INVOICE_ID, SERVICES, UPDATE_INVOICE_DATA} from '../../../redux/reducer/AuthReducer'
 import {ALL_CUSTOMER_DATA} from '../../../redux/reducer/AgentDataReducer'
 import {Order_By_Agent, Create_Customer_Account, Generate_InvoiceBy_Agent} from '../../../redux/action/AuthAction'
 import {SetAllCustomer_Data} from '../../../redux/action/AgentAction'
@@ -96,8 +96,9 @@ function TabPanel(props) {
     const InvoiceId = useSelector(INVOICE_ID)
     const ClientData = useSelector(ALL_CUSTOMER_DATA)
     const Services = useSelector(SERVICES)
+    const InvoiceData = useSelector(UPDATE_INVOICE_DATA)
 
-    console.log("Services is here ",Services)
+    console.log("InvoiceData is here ",InvoiceData)
 
     const [client, setClient] = useState("")
     const [service, setService] = useState("")
@@ -175,9 +176,10 @@ function TabPanel(props) {
   
     const GenerateInvoice = async () => {
         const newObj = {
-            agent_id:LoginData.user.id,
+            agent:LoginData.user.id,
             client:client,
             amount:price,
+            status:"Not Paid",
             currency,
             payment_type:paymentType,
         }
@@ -189,7 +191,7 @@ function TabPanel(props) {
     }
     
     useEffect(() => {
-        if(InvoiceId !== "") setInvoiceLink(`http://google.com/${InvoiceId}`)
+        if(InvoiceId !== "") setInvoiceLink(`http://localhost:3000/paypal/${InvoiceId}`)
     },[InvoiceId])
     return (
       <div className={classes.root}>
@@ -289,7 +291,7 @@ function TabPanel(props) {
                                 onClick={generateOrder}
                                 endIcon={<Icon>send</Icon>}
                             >
-                                Generate Order
+                                Create New Order
                             </Button>
                         </div>
                         }
@@ -340,7 +342,7 @@ function TabPanel(props) {
                                 className={classes.button}
                                 endIcon={<Icon>send</Icon>}
                             >
-                                Generate Order
+                                Create New Account
                             </Button>
                             }
                         </div>
@@ -399,13 +401,13 @@ function TabPanel(props) {
                                     inputProps={{ 'aria-label': 'Without label' }}
                                 >
                                     <MenuItem value="" disabled>
-                                        Service Type
+                                        Currency
                                     </MenuItem>
                                     <MenuItem value={"USD"}>$-USD</MenuItem>
                                     <MenuItem value={"CAD"}>$-CAD</MenuItem>
                                     <MenuItem value={"Euros"}>€-Euros</MenuItem>
                                 </Select>
-                                <FormHelperText>Service Type</FormHelperText>
+                                <FormHelperText>Currency</FormHelperText>
                             </FormControl>
                         </div>
 
@@ -422,7 +424,7 @@ function TabPanel(props) {
                                         Payment Type
                                     </MenuItem>
                                     <MenuItem value={"PayPal"}>PayPal</MenuItem>
-                                    <MenuItem value={"Stripe"}>Stripe</MenuItem>
+                                    {/* <MenuItem value={"Stripe"}>Stripe</MenuItem> */}
                                 </Select>
                                 <FormHelperText>Payment Type</FormHelperText>
                             </FormControl>

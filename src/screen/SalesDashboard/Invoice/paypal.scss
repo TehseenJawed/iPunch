@@ -1,0 +1,54 @@
+.paypal-heading{
+    font-size: 25px;
+}
+.paypal-desc{
+    font-size: 13px;
+    margin: 15px;
+    text-align: center;
+}
+.paypal-body{
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    flex-direction: column;
+}
+.paypal-container{
+    display: flex;
+    flex-direction: row;
+}
+.desc-conainter{
+    width: 100%;
+}
+.desc-row{
+    width: 100%;
+    background-color: rgb(231, 231, 231);
+    padding: 10px;
+    display: flex;
+    justify-content: space-evenly;
+    border: 0.5px solid white;
+    border-radius: 5px;
+}
+.desc-set1{
+    width: 40%;
+    display: flex;
+    justify-content: center;
+}
+.desc-set2{
+    width: 60%;
+}
+.success-loaderContainer{
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+}
+.success-heading{
+    font-size: 25px;
+    color: green;
+    text-align: center;
+}
+.success-icon{
+    width: 100%;
+    text-align: center;
+    margin-bottom: 25px;
+}

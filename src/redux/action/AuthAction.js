@@ -86,6 +86,13 @@ export const UpdateAllClient = (load) => {
   };
 };
 
+export const UpdateInvoiceData = (load) => {
+  return {
+    type: "UpdateInvoiceData",
+    load,
+  };
+};
+
  
 export const ChangeBaseURL = (load) => {
     return async (dispatch, state) => {
@@ -118,7 +125,6 @@ export const SignoutFunction = (load) => {
   };
 
 
-
 export const SignupFunction = (load) => {
     return async (dispatch, state) => {
       try{
@@ -140,19 +146,8 @@ export const SignupFunction = (load) => {
 export const LoginFunction = (load) => {
     return async (dispatch, state) => {
       try{
-        await dispatch(Loading(true))
+        dispatch(Loading(true))
         const response = await axios.post(`${state().AuthReducer.baseUrl}api/auth/login`, load)
-        console.log(response.data)
-
-        // if(response.data.user.password === undefined){
-        //   const newPassword = prompt("Your Password is out dated. Kindly give your new password here")
-        //   const load = {password:newPassword}
-        //   console.log("Chal raha hai ....")
-        //   // const response = await axios.patch(`${state().AuthReducer.baseUrl}api/auth/login/${response.data.user.id}`, load)
-          
-        //   dispatch(ChangeSnackData({text:"Your Password has updated.", variant:"success"}))
-        //   dispatch(ChangeSnackFlag(true))
-        // }
         dispatch(Login(response.data))
         dispatch(ChangeSnackData({text:"You have Loggedin successfully.", variant:"success"}))
         dispatch(ChangeSnackFlag(true))
@@ -166,11 +161,86 @@ export const LoginFunction = (load) => {
     }
   };
 
-export const Order_By_Agent = (load) => {
+export const GetInvoiceData = (load) => {
+    return async (dispatch, state) => {
+      try{
+        dispatch(Loading(true))
+        const response = await axios.get(`${state().AuthReducer.baseUrl}api/customer-invoice/${load}?_id=${load}`)
+        await dispatch(UpdateInvoiceData(response.data.results[0]))
+        await dispatch(Loading(false))
+      }
+      catch(err) {
+        dispatch(Loading(false))
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+
+export const UpdateProfileInfo = (load) => {
+    return async (dispatch, state) => {
+      try{
+        dispatch(Loading(true))
+        const response = await axios.patch(`${state().AuthReducer.baseUrl}api/user/${state().AuthReducer.loginData.user.id}`, load)
+        await dispatch(ChangeSnackData({text:"Information Updated. Kindly login Again.", variant:"success"}))
+        await dispatch(ChangeSnackFlag(true))
+        await dispatch(Login({}))
+        await dispatch(Loading(false))
+      }
+      catch(err) {
+        dispatch(Loading(false))
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+
+  
+export const UpdateInvoiceStatus = (load) => {
+    return async (dispatch, state) => {
+      try{
+        dispatch(Loading(true))
+        const response = await axios.patch(`${state().AuthReducer.baseUrl}api/customer-invoice/${load}`,{status:"Paid"})
+        dispatch(ChangeSnackData({text:"Payment Accepted", variant:"success"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+      catch(err) {
+        dispatch(Loading(false))
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+
+
+export const ChangePassword = (load) => {
     return async (dispatch, state) => {
       try{
         await dispatch(Loading(true))
-        await axios.post(`${state().AuthReducer.baseUrl}api/order`, load)
+        const response = await axios.patch(`${state().AuthReducer.baseUrl}api/user/${state().AuthReducer.loginData.user.id}`, load)
+        dispatch(ChangeSnackData({text:"You have changed password successfully.", variant:"success"}))
+        dispatch(ChangeSnackFlag(true))
+        await dispatch(Loading(false))
+        
+      }
+      catch(err) {
+        dispatch(Loading(false))
+        dispatch(ChangeSnackData({text:"There is an error while changing your password", variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+
+export const Order_By_Agent = (formData) => {
+    return async (dispatch, state) => {
+      try{
+        await dispatch(Loading(true))
+        await axios.post(`${state().AuthReducer.baseUrl}api/order`, formData, {
+          headers: {
+            Accept: 'application/json',
+            'Content-Type': 'multipart/form-data',
+          },
+        })
         await dispatch(Loading(false))
         dispatch(ChangeSnackData({text:"A New Order has placed.", variant:"success"}))
         dispatch(ChangeSnackFlag(true))
@@ -205,7 +275,6 @@ export const Create_Customer_Account = (load) => {
   };
 
 export const Generate_InvoiceBy_Agent = (load) => {
-  console.log("Generate Invoice is here ==> ",load)
     return async (dispatch, state) => {
       try{
         await dispatch(Loading(true))
@@ -277,7 +346,7 @@ export const SetState_Data = (load) => {
 
     return async (dispatch, state) => {
       try{
-        const response = await axios.get(`${state().AuthReducer.baseUrl}api/state`, load)
+        const response = await axios.get(`${state().AuthReducer.baseUrl}api/state?limit=200`, load)
         dispatch(AddState(response.data))
       }
       catch(err) {

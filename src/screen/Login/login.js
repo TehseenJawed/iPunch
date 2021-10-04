@@ -9,7 +9,7 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import CompanyLogo from '../../assets/brand/logo.png'
+import CompanyLogo from '../../assets/brand/iplogo.svg'
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import {LOGIN_DATA, LOGIN_FLAG, LOADING} from '../../redux/reducer/AuthReducer';
 import {ChangeSalesLogin, LoginFunction} from '../../redux/action/AuthAction'
@@ -26,7 +26,8 @@ const Login = () => {
     const LoginFlag = useSelector(LOGIN_FLAG)
     const LoginData = useSelector(LOGIN_DATA)
     const dispatch = useDispatch()
-    console.log(LoginData)
+
+
     const Signin = () => {
         const newObj = {
             email,
@@ -40,7 +41,7 @@ const Login = () => {
         setSnackBar,
         ...snackObj
     }
-
+console.log("65656565",loadingSelector)
     useEffect(() => {
         if(email.includes("@")){
             setPassError(false)
@@ -115,7 +116,7 @@ const Login = () => {
                     <div className="login-signup-txt">
                       Getting error during Signin<span className="login-forgot-txt2">Forgot Password?</span>
                     </div>
-
+                    
                     <div className="login-btn">
                       <Button onClick={Signin} variant="contained" style={{backgroundColor:'#626FE4' , color:'white', width:'50%', fontWeight:'bold'}}>Sign in</Button>
                     </div>

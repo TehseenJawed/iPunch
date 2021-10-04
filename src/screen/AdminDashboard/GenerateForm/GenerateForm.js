@@ -22,7 +22,7 @@ import Typography from '@material-ui/core/Typography';
 import Box from '@material-ui/core/Box';
 import { LOGIN_DATA } from '../../../redux/reducer/AuthReducer';
 import {useSelector, useDispatch} from 'react-redux';
-import {CreateNewAgent, CreateNewState} from '../../../redux/action/AdminAction'
+import {CreateNewAgent, CreateNewState, CreateNewService} from '../../../redux/action/AdminAction'
 
 
 function TabPanel(props) {
@@ -91,6 +91,7 @@ function TabPanel(props) {
     const dispatch = useDispatch()
 
     const [agentName, setAgentName] = useState("")
+    const [service, setService] = useState("")
     const [agentPhone, setAgentPhone] = useState()
     const [agentEducation, setAgentEducation] = useState()
     const [agentAddress, setAgentAddress] = useState()
@@ -100,14 +101,8 @@ function TabPanel(props) {
     const [accNo, setAccNo] = useState()
     const [agentType, setAgentType] = useState()
     const [agentEmail, setAgentEmail] = useState()
-
-
     const [state, setState] = useState("")
-
-    const [invoiceNo, setInvoiceNo] = useState(105412)
-    const [currency, setCurrency] = useState("")
-    const [paymentType, setPaymentType] = useState("")
-    const [invoiceLink, setInvoiceLink] = useState("")
+    const [agentComission, setAgentComission] = useState("")
 
     const CreateAgentAccount = () => {
 
@@ -118,6 +113,7 @@ function TabPanel(props) {
             education : agentEducation,
             company : "Ideal Punch",
             password : "test12345",
+            comission: agentComission,
             address : agentAddress,
             salaryType : agentSalaryType,
             salary : agentSalary,
@@ -136,6 +132,15 @@ function TabPanel(props) {
             state
         }
         dispatch(CreateNewState(newObj))
+    }
+
+    const CreateService = () => {
+
+        const newObj = {
+            admin: LoginData.user.id,
+            service
+        }
+        dispatch(CreateNewService(newObj))
     }
 
   
@@ -168,6 +173,7 @@ function TabPanel(props) {
               
             <Tab label="Create Agent Account" {...a11yProps(0)} />
             <Tab label="Add New State" {...a11yProps(1)} />
+            <Tab label="Add New Service" {...a11yProps(2)} />
             {/* <Tab label="Generate Invoice" {...a11yProps(2)} /> */}
 
           </Tabs>
@@ -194,6 +200,10 @@ function TabPanel(props) {
 
                         <div className="salesOrder-Textfield">
                             <TextField className="salesOrder-Textfield" value={agentPhone} onChange={(e) => setAgentPhone(e.target.value)} id="standard-basic" label="Phone" />
+                        </div>
+
+                        <div className="salesOrder-Textfield">
+                            <TextField className="salesOrder-Textfield" value={agentComission} onChange={(e) => setAgentComission(e.target.value)} id="standard-basic" label="Comission" />
                         </div>
 
                         <div className="salesOrder-Textfield">
@@ -260,6 +270,10 @@ function TabPanel(props) {
                             <TextField className="salesOrder-Textfield" value={agentEmail} onChange={(e) => setAgentEmail(e.target.value)} id="standard-basic" label="Email" />
                         </div>
 
+                        <div className="salesOrder-Textfield">
+                            {/* <TextField className="salesOrder-Textfield" value={agentEmail} onChange={(e) => setAgentEmail(e.target.value)} id="standard-basic" label="Email" /> */}
+                        </div>
+
                         <div className="salesOrder-Textfield3">
                             <Button variant="contained"
                                 className="salesOrder-Textfield3"
@@ -297,7 +311,38 @@ function TabPanel(props) {
                                 onClick={CreateState}
                                 endIcon={<Icon>send</Icon>}
                             >
-                                Generate Order
+                                Generate State
+                            </Button>
+                        </div>
+
+                    </form>
+                </div>
+
+          </TabPanel>
+
+          <TabPanel value={value} index={2} dir={theme.direction}>
+            
+          <div className="salesOrder-formContainer">
+                    <div className="salesForm-heading">Add New Service</div>
+
+                    <form className="salesOrder-formTextfields" noValidate autoComplete="off">
+
+                        <div className="salesOrder-Textfield">
+                            <TextField disabled className="salesOrder-Textfield" value={LoginData.user.id} id="standard-basic" label="Name" />
+                        </div>
+
+                        <div className="salesOrder-Textfield">
+                            <TextField className="salesOrder-Textfield" onChange={(e) => setService(e.target.value)} value={service} id="standard-basic" label="Create State" />
+                        </div>
+
+                        <div className="salesOrder-Textfield3">
+                            <Button variant="contained"
+                                className="salesOrder-Textfield3"
+                                className={classes.button}
+                                onClick={CreateService}
+                                endIcon={<Icon>send</Icon>}
+                            >
+                                Generate Service
                             </Button>
                         </div>
 

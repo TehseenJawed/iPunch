@@ -22,7 +22,7 @@ import DateFnsUtils from '@date-io/date-fns';
 import { makeStyles } from '@material-ui/core/styles';
 import { LOADING, LOGIN_DATA, STATE } from '../../../redux/reducer/AuthReducer'
 import { ALL_CLIENT_FILTERDATA } from '../../../redux/reducer/AgentDataReducer'
-import { SetAllClients_Data, FilterClientByEmail, FilterClientByInterest, FilterClientByState } from '../../../redux/action/AgentAction'
+import { SetAllClients_Data, FilterClientByEmail, FilterClientByInterest, FilterClientByState, SetExpectedClients } from '../../../redux/action/AgentAction'
 import { Generate_NewClient } from '../../../redux/action/AuthAction'
 import CircularProgress from '../../../components/CircularProgress/circularProgress'
 import { et } from 'date-fns/locale';
@@ -389,8 +389,6 @@ const RegisterClient = () => {
                         {State.results.map((v, i) =>
                             <MenuItem value={v.state}>{v.state}</MenuItem>
                         )}
-
-
                     </Select>
                 </CssFormControl>
 

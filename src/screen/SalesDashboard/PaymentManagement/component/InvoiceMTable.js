@@ -15,7 +15,7 @@ import Typography from '@material-ui/core/Typography';
 import Paper from '@material-ui/core/Paper';
 import KeyboardArrowDownIcon from '@material-ui/icons/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@material-ui/icons/KeyboardArrowUp';
-import { ALL_CUSTOMER_DATA, ALL_ORDER_DATA } from '../../../../redux/reducer/AgentDataReducer'
+import { ALL_CUSTOMER_DATA, ALL_ORDER_DATA, AllInvoiceData } from '../../../../redux/reducer/AgentDataReducer'
 import { LOGIN_DATA } from '../../../../redux/reducer/AuthReducer'
 import {useSelector, useDispatch} from 'react-redux'
 import EditProfile from './EditProfilePopover'
@@ -35,7 +35,16 @@ function Row(props) {
   const [profileFlag, setPrifleFlag] = useState(false)
   const [editProfileData, setEditProfileData] = useState("")
   const classes = useRowStyles();
-  
+
+  function copyToClipboard(text) {
+    var dummy = document.createElement("textarea");
+    document.body.appendChild(dummy);
+    dummy.value = text;
+    dummy.select();
+    document.execCommand("copy");
+    document.body.removeChild(dummy);
+}
+
   return (
     <React.Fragment>
       {profileFlag ? <EditProfile data={{profileFlag, setPrifleFlag, editProfileData}}/> : null}
@@ -45,16 +54,18 @@ function Row(props) {
             {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
           </IconButton>
         </TableCell>
-        <TableCell component="th" scope="row">{row.username}</TableCell>
-        <TableCell align="center">{row.email}</TableCell>
-        <TableCell align="center">{row.phone}</TableCell>
-        <TableCell align="center">{row.company}</TableCell>
-        <TableCell align="center">{row.id}</TableCell>
+        <TableCell component="th" scope="row">{row.id}</TableCell>
+        <TableCell align="center">{row.client.username}</TableCell>
+        <TableCell align="center">{row.status}</TableCell>
+        <TableCell align="center">{row.payment_type}</TableCell>
         <TableCell align="center">
-          <Button onClick={() => {setPrifleFlag(true); setEditProfileData(row)}}>Edit</Button>
+          $ {row.amount}
+        </TableCell>
+        <TableCell align="center">
+          <Button onClick={() => copyToClipboard(`http://localhost:3000/paypal/${row.id}`)}>COPY</Button>
         </TableCell>
       </TableRow>
-      <TableRow>
+      {/* <TableRow>
         <TableCell style={{ paddingBottom: 0, paddingTop: 0 }} colSpan={6}>
           <Collapse in={open} timeout="auto" unmountOnExit>
             <Box margin={1}>
@@ -90,7 +101,7 @@ function Row(props) {
             </Box>
           </Collapse>
         </TableCell>
-      </TableRow>
+      </TableRow> */}
     </React.Fragment>
   );
 }
@@ -99,44 +110,29 @@ function Row(props) {
 export default function CollapsibleTable() {
   const customerData = useSelector(ALL_CUSTOMER_DATA)
   const ordersData = useSelector(ALL_ORDER_DATA)
+  const invoiceData = useSelector(AllInvoiceData)
   const loginData = useSelector(LOGIN_DATA)
-  const rows = customerData.results
-  console.log(ordersData.results)
+  const rows = invoiceData.results
+  console.log(invoiceData.results)
   return (
     <TableContainer component={Paper}>
       <Table aria-label="collapsible table">
         <TableHead>
           <TableRow>
             <TableCell />
-            <TableCell>Customer Name</TableCell>
-            <TableCell align="center">Email</TableCell>
-            <TableCell align="center">Phone</TableCell>
-            <TableCell align="center">Company</TableCell>
-            <TableCell align="center">Orders</TableCell>
-            <TableCell align="center">Edit Profile</TableCell>
+            <TableCell>#</TableCell>
+            <TableCell align="center">Customer</TableCell>
+            <TableCell align="center">Status</TableCell>
+            <TableCell align="center">Type</TableCell>
+            <TableCell align="center">Amount</TableCell>
+            <TableCell align="center">Copy Link</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
           {rows.map((row) => {
-            const customerOrder = []
-            const unpaidOrders = []
-            const paidOrders = []
-            for(var a = 0; a<ordersData.results.length; a++){
-              console.log(ordersData.results[a])
-              if(ordersData.results[a].customer.id === row.id){
-                customerOrder.push(ordersData.results[a])
-                if(ordersData.results[a].paymentStatus === "Not Paid"){
-                  unpaidOrders.push(ordersData.results[a])
-                }
-                if(ordersData.results[a].paymentStatus === "Paid"){
-                  paidOrders.push(ordersData.results[a])
-                }
-              }
-            }
-
-            const filterOrders = {customerOrder, unpaidOrders, paidOrders}
+           console.log(row)
             return(
-              <Row key={row.id} row={row} orders={filterOrders} />
+              <Row key={row.id} row={row} />
             )
           })}
         </TableBody>

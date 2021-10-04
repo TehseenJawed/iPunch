@@ -8,7 +8,7 @@ import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import FormControl from '@material-ui/core/FormControl';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import CompanyLogo from '../../assets/brand/logo.png'
+import CompanyLogo from '../../assets/brand/iplogo.svg'
 import LockOpenIcon from '@material-ui/icons/LockOpen';
 import AssignmentIndIcon from '@material-ui/icons/AssignmentInd';
 import PhoneIcon from '@material-ui/icons/Phone';
@@ -42,6 +42,7 @@ const Signup = () => {
             company,
             email,
             password:pass,
+            createdBy: "Admin",
             role: userRole
         }
         dispatch(SignupFunction(newObj))

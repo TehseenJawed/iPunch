@@ -2,19 +2,20 @@ import React, { useState } from 'react';
 import { DataGrid } from '@material-ui/data-grid';
 import { makeStyles } from '@material-ui/styles';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
-import ThumbUpAltIcon from '@material-ui/icons/ThumbUpAlt';
-import ThumbDownAltIcon from '@material-ui/icons/ThumbDownAlt';
 import {useSelector, useDispatch} from 'react-redux'
-import {ALLDeliverOrders} from '../../../../redux/reducer/AgentDataReducer';
+import {ALL_ORDER_SORT} from '../../../../redux/reducer/AgentDataReducer';
 import { BASE_URL } from '../../../../redux/reducer/AuthReducer';
+import { OrdersForInvoice } from '../../../../redux/action/AgentAction';
 import { Button } from '@material-ui/core';
-import Icon from '@material-ui/core/Icon';
 
 
 export default function DataTable({ data }) {
   const classes = useStyles();
-  const rows =useSelector(ALLDeliverOrders)
+  const dispatch = useDispatch()
+  const rows =useSelector(ALL_ORDER_SORT)
+  console.log(rows)
   const BaseURL = useSelector(BASE_URL)
+  const {setOrderFlag, setSelectedOrder, setEditOrder}  = data
 
   const columns = [
     {
@@ -67,36 +68,6 @@ export default function DataTable({ data }) {
       },
     },
     {
-      field: 'files',
-        headerName: 'Files',
-        headerAlign: 'center', 
-        align: 'center',
-        description: 'This column has a value getter and is not sortable.',
-        sortable: false,
-        width: 140,
-        type: 'number',
-        renderCell: (params) => {
-  
-          const DownloadFiles = () => {
-            for (let i = 0; i < params.row.files.length; i++) {
-              var a = document.createElement("a");
-              a.setAttribute('download', '');
-              a.setAttribute('target', '_blank');
-              a.setAttribute('href', `${BaseURL}uploads/${params.row.files[i]}`);
-              a.click()
-            }
-  
-          }
-  
-          return (
-            <Button onClick={DownloadFiles} variant="contained" color="secondary">
-              Download
-            </Button>
-          )
-          // params.row.agent.username
-        }
-    },
-    {
       field: 'paymentStatus',
       headerName: 'Payment',
       headerAlign: 'center',
@@ -139,9 +110,41 @@ export default function DataTable({ data }) {
         );
       },
   },
+  {
+    field: 'files',
+      headerName: 'Files',
+      headerAlign: 'center', 
+      align: 'center',
+      sortable: false,
+      width: 140,
+      type: 'number',
+      renderCell: (params) => {
+        return (
+          <Button onClick={() => {setOrderFlag(true); setSelectedOrder(params.row)}} >
+            DETAILS
+          </Button>
+        )
+      }
+  },
+  {
+    field: 'id',
+      headerName: 'Change',
+      headerAlign: 'center', 
+      align: 'center',
+      sortable: false,
+      width: 140,
+      type: 'number',
+      renderCell: (params) => {
+        return (
+          <Button onClick={() => {setEditOrder(true); setSelectedOrder(params.row)}}>
+            CHANGES
+          </Button>
+        )
+      }
+  },
+    
   ];
 
-  console.log("It is row ===> ",rows.results)
   return (
     <div className={classes.root} style={{ height: 400, width: '100%', backgroundColor: 'white', textAlign: "center" }}>
       <DataGrid
@@ -151,10 +154,11 @@ export default function DataTable({ data }) {
         onCellDoubleClick={(e) => {
         }}
         onSelectionModelChange={(e) => {
-          // const selectedIDs = new Set(e);
-          // const selectedRowData = rows.filter((row) =>
-          //   selectedIDs.has(row.id)
-          // )
+          const selectedIDs = new Set(e);
+          const selectedRowData = rows.results.filter((row) =>
+            selectedIDs.has(row.id)
+            )
+            dispatch(OrdersForInvoice(selectedRowData))
         }}
 
         getCellClassName={(params) => {

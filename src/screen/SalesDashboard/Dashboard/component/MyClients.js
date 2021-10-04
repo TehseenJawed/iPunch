@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Paper from '@material-ui/core/Paper';
 import Table from '@material-ui/core/Table';
@@ -8,7 +8,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TablePagination from '@material-ui/core/TablePagination';
 import TableRow from '@material-ui/core/TableRow';
-import {ALL_CUSTOMER_DATA} from '../../../../redux/reducer/AgentDataReducer'
+import {ALL_CUSTOMER_DATA_SORT, CUSTOMER_SORT_FILTER} from '../../../../redux/reducer/AgentDataReducer'
+import {SetAllCustomer_Filter, SetAllCustomer_FilterData} from '../../../../redux/action/AgentAction'
 import {useSelector, useDispatch} from 'react-redux'
 
 
@@ -26,11 +27,21 @@ export default function StickyHeadTable({data}) {
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(25);
-  const customerRows = useSelector(ALL_CUSTOMER_DATA)
+  const dispatch = useDispatch()
+  const customerRows = useSelector(ALL_CUSTOMER_DATA_SORT)
+  const fiterCustomer = useSelector(CUSTOMER_SORT_FILTER)
   const rows = customerRows.results
 
-  const {columns, range, changeCustomerPage} = data
+  const {columns, range} = data
 
+  const changeTableRows = (e) => {
+    dispatch(SetAllCustomer_Filter(e))
+  }
+  useEffect(() => {
+    if(customerRows !== undefined){
+      dispatch(SetAllCustomer_FilterData())
+    }
+  },[fiterCustomer])
   return (
     <Paper className={classes.root}>
         {rows !== undefined ?
@@ -52,7 +63,7 @@ export default function StickyHeadTable({data}) {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.slice(range.page * range.limit, range.page * range.limit + range.limit).map((row) => {
+          {rows.map((row) => {
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={row.code}>
                 {columns.map((column) => {
@@ -73,11 +84,11 @@ export default function StickyHeadTable({data}) {
       <TablePagination
         rowsPerPageOptions={[10, 25, 100]}
         component="div"
-        count={rows.length}
-        rowsPerPage={range.limit}
-        page={range.page}
-        onPageChange={(e, newpage) => changeCustomerPage({limit:range.limit, page:newpage})}
-        onRowsPerPageChange={(e) => changeCustomerPage({limit:e.target.value, page:range.page})}
+        count={customerRows.totalResults}
+        rowsPerPage={fiterCustomer.limit}
+        page={fiterCustomer.page}
+        onPageChange={(e, newpage) => changeTableRows({limit:range.limit, page:newpage})}
+        onRowsPerPageChange={(e) => changeTableRows({limit:e.target.value, page:fiterCustomer.page})}
       /></div>
 
       :null}

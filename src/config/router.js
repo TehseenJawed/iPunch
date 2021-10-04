@@ -17,6 +17,7 @@ import GenerateForm from '../screen/SalesDashboard/GenerateForm/GenerateForm';
 import RegisterClient from '../screen/SalesDashboard/RegisterClient/RegisterClient';
 import MyOrders from '../screen/SalesDashboard/MyOrders/MyOrders';
 import CustomerManagement from '../screen/SalesDashboard/CustomerManagement/CustomerManagement';
+import PaymentManagement from '../screen/SalesDashboard/PaymentManagement/PaymentManagement';
 import UserProfile from '../screen/SalesDashboard/Profile/Profile';
 
 import DesignerDash from '../screen/DesignerDashboard/Dashboard/Dashboard'; 
@@ -29,6 +30,9 @@ import AdminDash from '../screen/AdminDashboard/Dashboard/Dashboard';
 import AdminGenerateForm from '../screen/AdminDashboard/GenerateForm/GenerateForm';
 import AdminOrders from '../screen/AdminDashboard/MyOrders/MyOrders';
 import AllInvoices from '../screen/AdminDashboard/AllInvoices/AllInvoices';
+import PayPal from '../screen/SalesDashboard/Invoice/paypal'
+
+import Invoice from '../components/Invoice/Invoice'
 
 function FunctionalRoute() {
     return (
@@ -48,6 +52,10 @@ function FunctionalRoute() {
 
             <Route exact path="/signup">
                 <Signup />
+            </Route>
+
+            <Route exact path="/invoice">
+                <Invoice />
             </Route>
 
            {/* Sales Dashboard */}
@@ -90,6 +98,16 @@ function FunctionalRoute() {
                     </SalesDashboard>
                 </ProtectedRoute>
             </Route>
+
+            <Route exact path="/ip-sales/payment-management">
+                <ProtectedRoute>
+                    <SalesDashboard>
+                        <PaymentManagement />
+                    </SalesDashboard>
+                </ProtectedRoute>
+            </Route>
+
+            <Route exact path="/paypal/:id" component={PayPal} />
 
             <Route exact path="/ip-sales/user-profile">
                 <ProtectedRoute>

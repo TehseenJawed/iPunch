@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import CompanyLogo from '../../assets/brand/logo.png'
+import CompanyLogo from '../../assets/brand/logo.svg'
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PersonIcon from '@material-ui/icons/Person';
 import Profile from '../../assets/brand/user.jpg'
@@ -16,16 +16,20 @@ import StorageIcon from '@material-ui/icons/Storage';
 import FlipToBackIcon from '@material-ui/icons/FlipToBack';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import {useSelector, useDispatch} from 'react-redux';
-import {LOGIN_FLAG} from '../../redux/reducer/AuthReducer'
+import {LOGIN_FLAG, LOGIN_DATA} from '../../redux/reducer/AuthReducer'
+import ChangePassword from '../../components/ChangePassword/ChangePassword'
 
 const AdminDashboards = ({ children }) => {
     const [anchorEl, setAnchorEl] = useState(null);
     const LoginFlag = useSelector(LOGIN_FLAG)
+    const LoginData = useSelector(LOGIN_DATA)
+    const [changeFlag, setChangeFlag] = useState(false)
     console.log("Flag is here ==> ",LoginFlag)
     const DropObj = {
         anchorEl, 
         setAnchorEl,
-        profile:'/ip-sales/user-profile'
+        profile:'/ip-sales/user-profile',
+        setChangeFlag
     }
 
     const handleClick = (event) => {
@@ -34,11 +38,11 @@ const AdminDashboards = ({ children }) => {
     return (
         <div className="salesContainer">
             {LoginFlag ? null : <Redirect to="/login" />}
+            <ChangePassword flag={{changeFlag, setChangeFlag}}/>
             <div className="salesSide-menu">
 
                 <div className="salesLogo-container">
                     <img className="sales-logo" src={CompanyLogo} alt="Logo" />
-                    <div className="sales-logoText">Tehseen Jawed</div>
                 </div>
 
                 <Link to="/ip-admin/dashboard" className="salesSidemenu-item">
@@ -76,11 +80,11 @@ const AdminDashboards = ({ children }) => {
             
             <div className="salesTop-menu">
                 <div className="salesTop-Header">
-                    <div className="salesTop-Email">Email US: </div>
-                    <div className="salesTop-Email">tehseenjawed1@gmail.com</div>
+                    <div className="salesTop-Email">WELCOME {LoginData.user.username}</div>
+                    <div className="salesTop-Email"></div>
                     <div className="salesTop-Avatar" onClick={handleClick}>
                         <Avatar alt="Cindy Baker" src={Profile} />
-                        <div>Tehseen Jawed</div>
+                        <div>{LoginData.user.email}</div>
                     </div>
                 </div>
                 <DropMenu data={DropObj} />

@@ -6,6 +6,7 @@ import ListItemIcon from '@material-ui/core/ListItemIcon';
 import ListItemText from '@material-ui/core/ListItemText';
 import ExitToAppIcon from '@material-ui/icons/ExitToApp';
 import TuneIcon from '@material-ui/icons/Tune';
+import VpnKeyIcon from '@material-ui/icons/VpnKey';
 import AccountBoxIcon from '@material-ui/icons/AccountBox';
 import {Link, Redirect} from 'react-router-dom'
 import {useSelector, useDispatch} from 'react-redux';
@@ -45,11 +46,10 @@ const StyledMenuItem = withStyles((theme) => ({
 }))(MenuItem);
 
 export default function CustomizedMenus({data}) {
-  const { anchorEl, setAnchorEl, profile } = data
+  const { anchorEl, setAnchorEl, profile, setChangeFlag } = data
   const dispatch = useDispatch()
   const [reload, setReload] = useState("")
   const LoginFlag = useSelector(LOGIN_FLAG)
-  console.log(LoginFlag)
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -80,12 +80,22 @@ export default function CustomizedMenus({data}) {
           <ListItemText primary="Profile" />
         </StyledMenuItem>
         </Link>
+        
         <StyledMenuItem>
           <ListItemIcon>
             <TuneIcon fontSize="small" style={{fill:"#11CDEF"}}/>
           </ListItemIcon>
           <ListItemText primary="Settings" />
         </StyledMenuItem>
+
+        
+        <StyledMenuItem onClick={() => setChangeFlag(true)}>
+          <ListItemIcon>
+            <VpnKeyIcon fontSize="small" style={{fill:"#11CDEF"}}/>
+          </ListItemIcon>
+          <ListItemText primary="Password" />
+        </StyledMenuItem>
+        
 
         <StyledMenuItem onClick={Signout}>
           <ListItemIcon>

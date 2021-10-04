@@ -1,6 +1,6 @@
 import React, {useState} from 'react';
 import {Link, Redirect} from 'react-router-dom';
-import CompanyLogo from '../../assets/brand/logo.png'
+import CompanyLogo from '../../assets/brand/logo.svg'
 import DashboardIcon from '@material-ui/icons/Dashboard';
 import PersonIcon from '@material-ui/icons/Person';
 import Profile from '../../assets/brand/user.jpg'

@@ -9,9 +9,9 @@ import UnpaidOrders from './component/UnpaidOrders';
 import OrdersPopover from './component/OrdersPopover';
 import UnpaidPopover from './component/UnpaidPopover'
 import {LOGIN_FLAG, LOGIN_DATA} from '../../../redux/reducer/AuthReducer'
-import {SetAllClients_Data, SetAllCustomer_Data, SetMyOrders, SetDeliverOrders, SetUncompleteOrders, SetUnpaidOrders} from '../../../redux/action/AgentAction'
-import { SetService_Data, SetState_Data } from '../../../redux/action/AuthAction'
-import {ALL_CUSTOMER_DATA, CUSTOMER_RANGE} from '../../../redux/reducer/AgentDataReducer'
+import {SetAllClients_Data, SetAllCustomer_FilterData, SetAllCustomer_Data, SetMyOrders, SetDeliverOrders, SetUncompleteOrders, SetUnpaidOrders, SetAllInvoice_Data, UpdateTotalSales, SetExpectedClients} from '../../../redux/action/AgentAction'
+import { SetService_Data, SetState_Data,  } from '../../../redux/action/AuthAction'
+import {ALL_CUSTOMER_DATA, CUSTOMER_RANGE, ALL_CUSTOMER_DATA_SORT} from '../../../redux/reducer/AgentDataReducer'
 
 const SalesDashboard = () => {
     const [tableData, setTableData] = useState("")
@@ -19,8 +19,9 @@ const SalesDashboard = () => {
     const [orderData, setOrderData] = useState("")
     const [unpaidFlag, setUnpaidFlag] = useState(false)
       const LoginData = useSelector(LOGIN_DATA)
-      const customerRows = useSelector(ALL_CUSTOMER_DATA)
+      const customerRows = useSelector(ALL_CUSTOMER_DATA_SORT)
     const customerRange = useSelector(CUSTOMER_RANGE)
+    console.log("It is here === ",customerRows)
     const dispatch = useDispatch()
 
     const customerColumn = [
@@ -201,11 +202,15 @@ const SalesDashboard = () => {
       dispatch(SetAllClients_Data())
       dispatch(SetAllCustomer_Data())
       dispatch(SetMyOrders())
+      dispatch(SetAllCustomer_FilterData())
       dispatch(SetService_Data())
       dispatch(SetState_Data())
       dispatch(SetUncompleteOrders())
       dispatch(SetDeliverOrders())
       dispatch(SetUnpaidOrders())
+      dispatch(SetAllInvoice_Data())
+      dispatch(UpdateTotalSales())
+      dispatch(SetExpectedClients())
     },[])
 
     return (

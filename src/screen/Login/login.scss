@@ -19,6 +19,17 @@
     background-color: white;
     border-radius: 15px;
 }
+.paypal-paper{
+    display: flex;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+    flex-direction: column;
+    width: 60%;
+    height: 500px;
+    background-color: white;
+    border-radius: 15px;
+}
 .login-field{
     width: 300px;
     height: 45px;
@@ -46,7 +57,7 @@
     margin-bottom: 50px;
 }
 .login-logo{
-    width: 50px;
+    width: 170px;
 }
 .login-forgot-txt{
     text-align: center;
@@ -76,14 +87,28 @@
     .login-paper{
         width: 45%;
     }
+    .paypal-paper{
+        width: 75%;
+    }
 }
 @media only screen and (max-width: 768px) {
     .login-paper{
         width: 70%;
     }
+    .paypal-paper{
+        width: 95%;
+    }
 }
 @media only screen and (max-width: 426px) {
     .login-paper{
         width: 100%;
+    }
+    .paypal-paper{
+        width: 100%;
+        flex-direction: column;
+    }
+    .paypal-container{
+        display: flex;
+        flex-direction: column !important;
     }
 }
