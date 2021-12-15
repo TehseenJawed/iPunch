@@ -1,5 +1,6 @@
 const initialState = {
-    baseUrl: "https://sleepy-chamber-98905.herokuapp.com/",
+    baseUrl: "https://frozen-beach-13534.herokuapp.com/",
+    // baseUrl: "http://localhost:3005/",
     invoice_id: "",
     services:[],
     state:[],

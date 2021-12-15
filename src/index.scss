@@ -32,3 +32,8 @@
     text-decoration: none;
     color: black;
 }
+.box-gallery{
+    z-index: -100;
+    top: -100px !important;
+    height: 110% !important;
+}

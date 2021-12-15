@@ -24,7 +24,7 @@ export const ChangeSnackData = (load) => {
 
 export const SetNewOrders = (load) => {
   return {
-    type: "Add_New_Orders",
+    type: "Add_Orders",
     load,
   };
 };
@@ -41,16 +41,14 @@ export const FetchNewOrders = (load) => {
     return async (dispatch, state) => {
       try{
         await dispatch(Loading(true))
-        const response =await axios.get(`${state().AuthReducer.baseUrl}api/order?designer=${state().AuthReducer.loginData.user.id}&orderStatus=Assigned`, load)
+        const response =await axios.get(`${state().AuthReducer.baseUrl}api/order?designer=${state().AuthReducer.loginData.user.id}`, load)
         dispatch(SetNewOrders(response.data))
-        // dispatch(ChangeSnackData({text:"A New IdealPunch Member has created.", variant:"success"}))
-        // dispatch(ChangeSnackFlag(true))
         
       }
       catch(err) {
-        // dispatch(Loading(false))
-        // dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
-        // dispatch(ChangeSnackFlag(true))
+        dispatch(Loading(false))
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
       }
     }
   };

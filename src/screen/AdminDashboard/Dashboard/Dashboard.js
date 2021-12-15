@@ -1,44 +1,71 @@
 import React, {useState, useEffect} from 'react'
 import AssignTable from './component/AssignOrders'
-import ReviewTable from './component/ReviewOrders'
+import ReviewTable from './component/Invoices'
+import AgentsTable from './component/Agents'
 import {useSelector, useDispatch} from 'react-redux';
-import {FetchOrders, FetchUsers, FetchAssignOrders, FetchDesignerData, FetchReviewOrders} from '../../../redux/action/AdminAction';
-import { ORDER_DATA, USER_DATA, ASSIGN_ORDERS, REVIEW_ORDERS} from '../../../redux/reducer/AdminReducer';
+import {FetchOrders, FetchUsers, FetchInvoices, FetchDesignerData, FetchAgents, FetchOrdersByPaymentStatus, FetchSalesAgent} from '../../../redux/action/AdminAction';
+import { ORDER_DATA, USER_DATA, ASSIGN_ORDERS, REVIEW_ORDERS, ORDER_DATAFILTER} from '../../../redux/reducer/AdminReducer';
 import RevisionPopover from './component/RevisionPopover'
+import DetailsPopover from './component/DetailsPopover'
+import AgentDetails from './component/AgentDetails'
+import EditAgentPopover from './component/EditAgentPopover';
 
 const SalesDashboard = () => {
     const dispatch = useDispatch();
-    const OrderData = useSelector(ORDER_DATA)
     const UserData = useSelector(USER_DATA)
-    const AssignOrders = useSelector(ASSIGN_ORDERS)
+    const OrderData = useSelector(ORDER_DATAFILTER)
     const ReviewOrders = useSelector(REVIEW_ORDERS)
     const [changesFlag, setChangesFlag] = useState(false)
     const [changesData, setChangesData] = useState(false)
-    console.log("It is review order ",ReviewOrders)
+
+    const [detailsFlag, setDetailsFlag] = useState(false)
+    const [orderDetails, setOrderDetails] = useState(true)
+
+    const [agentDetailsFlag, setAgentDetailsFlag] = useState(false)
+    const [editAgentDetailsFlag, setEditAgentDetailsFlag] = useState(false)
+    const [agentDetails, setAgentDetails] = useState({})
+
+
+    
+
     const ordersToAssign ={
-        rows:AssignOrders
+        rows:OrderData,
+        setChangesFlag, 
+        setChangesData,
+        setOrderDetails,
+        setDetailsFlag
     }
     const ordersToReview ={
         rows:ReviewOrders,
+        editAgentDetailsFlag,
+        setEditAgentDetailsFlag,
         setChangesFlag,
-        setChangesData
+        setChangesData,
+        setAgentDetails,
+        setAgentDetailsFlag
     }
 
     useEffect(() => {
       dispatch(FetchOrders())
-      dispatch(FetchAssignOrders())
+      dispatch(FetchOrdersByPaymentStatus())
+      dispatch(FetchInvoices())
       dispatch(FetchDesignerData())
       dispatch(FetchUsers())
-      dispatch(FetchReviewOrders())
+      dispatch(FetchAgents())
+      dispatch(FetchSalesAgent())
     },[])
-
+    
     return (
         <div>
+            {detailsFlag ? <DetailsPopover data={{detailsFlag, setDetailsFlag, orderDetails}} /> : null}
             <RevisionPopover data={[changesFlag, setChangesFlag, changesData]}/>
+            {agentDetails !== {} ? <AgentDetails data={{agentDetailsFlag, setAgentDetailsFlag, agentDetails}} /> : null }
+            {agentDetails !== {} ? <EditAgentPopover data={{agentDetails, editAgentDetailsFlag, setEditAgentDetailsFlag}} /> : null }
+            
             <div className="dashboard-tableContainer">
                 <div className="admin-table1">
                     <div className="tableHeader">
-                        Assign New Orders
+                        ORDERS
                         <button className="table-btn">View</button>
                     </div>
                    <AssignTable data={ordersToAssign} />
@@ -46,12 +73,20 @@ const SalesDashboard = () => {
 
                 <div className="admin-table1">
                     <div className="tableHeader">
-                        Review Orders
+                        INVOICES
                         <button className="table-btn">View</button>
                     </div>
                    <ReviewTable data={ordersToReview} />
                 </div> 
 
+                <div className="admin-table1">
+                    <div className="tableHeader">
+                        AGENTS
+                        <button className="table-btn">View</button>
+                    </div>
+                   <AgentsTable data={ordersToReview} />
+                </div> 
+            
             </div>
         </div>
     )

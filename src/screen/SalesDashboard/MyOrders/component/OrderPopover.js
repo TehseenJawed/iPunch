@@ -70,7 +70,8 @@ const useStyles = makeStyles((theme) => ({
     fontSize: 10,
     borderWidth: 1.5,
     borderColor: 'black',
-    color: 'black'
+    cursor:'pointer',
+    color: 'black',
   },
   image: {
     width: 100,
@@ -148,8 +149,8 @@ export default function TransitionsModal({ data }) {
               <h1 onClick={() => setOpen(true)} className={classes.descText}>DESCRIPTION: </h1>
               <h1 className={classes.descText}>DELIVER: {orderStatus}</h1>
               <h1 className={classes.descText}>ORDER: {orderStatus}</h1>
-              <h1 className={classes.descText}>RECEIVEDAT: {createdAt}</h1>
-              <h1 className={classes.descText}>DELIVEREDAT: {updatedAt}</h1>
+              <h1 className={classes.descText}>RECEIVED AT: {new Date(createdAt).toDateString()} </h1>
+              <h1 className={classes.descText}>DELIVERED AT: {new Date(updatedAt).toDateString()}</h1>
 
               <h1 className={classes.descText}>Artwork Files: </h1>
               <div className={classes.fileContainer}>
@@ -180,7 +181,7 @@ export default function TransitionsModal({ data }) {
             </div>
 
             <div className={classes.innerPaper2}>
-              <div style={{ color: '#626FE4', fontWeight: '800', letterSpacing: 5 }}>DELIVER FILES</div>
+              <div style={{ color: '#626FE4', fontWeight: '800', letterSpacing: 5, marginBottom:35 }}>DELIVER FILES</div>
               {
                 deliverFiles.map((v, i) => {
                   const DownloadFiles = (URL) => {

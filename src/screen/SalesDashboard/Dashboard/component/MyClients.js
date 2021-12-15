@@ -17,6 +17,7 @@ import {useSelector, useDispatch} from 'react-redux'
 const useStyles = makeStyles({
   root: {
     width: '100%',
+    height: 490,
   },
   container: {
     maxHeight: 440,

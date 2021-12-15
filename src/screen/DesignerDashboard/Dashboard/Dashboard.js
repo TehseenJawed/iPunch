@@ -7,7 +7,7 @@ import DeliverPopover from './component/DeliverPopover'
 import DesignerInvoice from './component/DesignerInvoice';
 import {LOGIN_FLAG, LOGIN_DATA} from '../../../redux/reducer/AuthReducer'
 import {FetchNewOrders} from '../../../redux/action/DesignerAction';
-import {ALL_NEW_ORDERS} from '../../../redux/reducer/DesignerReducer';
+import {ALL_ORDERS} from '../../../redux/reducer/DesignerReducer';
 
 const SalesDashboard = () => {
     const [tableData, setTableData] = useState("")
@@ -17,7 +17,7 @@ const SalesDashboard = () => {
     const dispatch = useDispatch()
     const LoginFlag = useSelector(LOGIN_FLAG)
     const LoginData = useSelector(LOGIN_DATA)
-    const NewOrders = useSelector(ALL_NEW_ORDERS)
+    const NewOrders = useSelector(ALL_ORDERS)
 
 
     const columns = [
@@ -192,7 +192,7 @@ console.log("=============> ",NewOrders)
                    <OrderTable data={clientData} />
                 </div>
                 
-                <div className="designerContainer2">
+                {/* <div className="designerContainer2">
                     <div className="tableHeader">
                         Paid Designs
                         <button className="designertable-btn">View</button>
@@ -206,15 +206,15 @@ console.log("=============> ",NewOrders)
                         <button className="designertable-btn">View</button>
                     </div>
                    <OrderTable data={clientData} />
-                </div>
+                </div> */}
 
-                <div className="designerContainer2">
+                {/* <div className="designerContainer2">
                     <div className="tableHeader">
                         Invoices
                         <button className="designertable-btn">View</button>
                     </div>
                    <DesignerInvoice data={clientData} />
-                </div>
+                </div> */}
 
             </div>
         </div>

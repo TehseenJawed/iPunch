@@ -196,7 +196,7 @@ const SalesDashboard = () => {
         setOrderFlag,
         setOrderData,
         setUnpaidFlag
-    }
+    } 
 
     useEffect(() => {
       dispatch(SetAllClients_Data())
@@ -222,7 +222,7 @@ const SalesDashboard = () => {
                 <div className="tableContainer1">
                     <div className="tableHeader">
                         Clients New Orders
-                        <button className="table-btn">View</button>
+                        {/* <button className="table-btn">View</button> */}
                     </div>
                    <ClientOrderTable data={clientData2} />
                 </div>
@@ -231,7 +231,7 @@ const SalesDashboard = () => {
                     
                     <div className="tableHeader">
                         My Clients
-                        <button className="table-btn table-btn2">View</button>
+                        {/* <button className="table-btn table-btn2">View</button> */}
                     </div>
                    <MyClients data={clientData} />
                 </div>
@@ -239,19 +239,12 @@ const SalesDashboard = () => {
                 <div className="tableContainer3-sales">
                     <div className="tableHeader">
                         Unpaid Orders
-                        <button className="table-btn table-btn3">View</button>
+                        {/* <button className="table-btn table-btn3">View</button> */}
                     </div>
                     
                     <UnpaidOrders data={clientData} />
                 </div>
 
-                <div className="tableContainer4">
-                    <div className="tableHeader">
-                        My Comission
-                        <button className="table-btn">View</button>
-                    </div>
-                   {/* <Table data={clientData} /> */}
-                </div>
 
             </div>
         </div>

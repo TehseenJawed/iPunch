@@ -63,7 +63,7 @@ function Row(props) {
           $ {row.amount}
         </TableCell>
         <TableCell align="center">
-          <Button onClick={() => copyToClipboard(`${BaseURL}/paypal/${row.id}`)}>COPY</Button>
+          <Button onClick={() => copyToClipboard(`https://mtech-pk.web.app/paypal/${row.id}`)}>COPY</Button>
         </TableCell>
       </TableRow>
       {/* <TableRow>

@@ -1,0 +1,63 @@
+.landing-header-container {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.landing-headercontainer {
+    width: 100%;
+    height: 100px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-shadow: 0px 0px 25px #e9e9e9;
+    background-color: #141f26;
+}
+.landing-brand-logo {
+    width: 200px;
+}
+.landing-header-subcontainer1 {
+    width: 20%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.landing-header-subcontainer2 {
+    width: 60%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.landing-links-container{
+    width: 60%;
+    display: flex;
+    justify-content: space-evenly;
+}
+.heaeder-link-text{
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    color: $landing-text-color;
+}
+.heaeder-link-activetext{
+    text-decoration: none;
+    font-size: 18px;
+    font-weight: 600;
+    color: $landing-text-activecolor;
+}
+.landingbutton{
+    border: 2px solid $landing-text-activecolor;
+    color: $landing-text-activecolor;
+    text-decoration: none;
+    font-weight: 600;
+    padding: 13px;
+    text-align: center;
+    font-size: 16px;
+    border-radius: 40px;
+}
+
+@media screen and (max-width: 1440px) and (min-width: 1024px) {
+    
+}

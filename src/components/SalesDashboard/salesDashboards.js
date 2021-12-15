@@ -17,7 +17,7 @@ import FlipToBackIcon from '@material-ui/icons/FlipToBack';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import {useSelector, useDispatch} from 'react-redux';
 import {LOGIN_FLAG, LOGIN_DATA} from '../../redux/reducer/AuthReducer'
-import {ALL_CLIENT_DATA, ALL_CUSTOMER_DATA, TOTAL_PAID_INVOICE, SET_EXPECTED_CLIENTS} from '../../redux/reducer/AgentDataReducer'
+import {ALL_CLIENT_DATA, ALL_CUSTOMER_DATA, TOTAL_PAID_INVOICE, SET_EXPECTED_CLIENTS, ALLDeliverOrders} from '../../redux/reducer/AgentDataReducer'
 import { DataUsageSharp } from '@material-ui/icons';
 import ChangePassword from '../../components/ChangePassword/ChangePassword'
 
@@ -32,8 +32,10 @@ const SalesDashboards = ({ children }) => {
     const customerData = useSelector(ALL_CUSTOMER_DATA)
     const paidInvoices = useSelector(TOTAL_PAID_INVOICE)
     const expectedClients = useSelector(SET_EXPECTED_CLIENTS)
+    const deliverOrders = useSelector(ALLDeliverOrders)
     
     const allCustomers = customerData.results
+
     const DropObj = {
         anchorEl, 
         setAnchorEl,
@@ -44,7 +46,8 @@ const SalesDashboards = ({ children }) => {
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
-    console.log("=========> ",totalSales)
+    
+    const myComission = deliverOrders.totalResults * LoginData.user.comission
 
     useEffect( ()  => {
         if(clientData.results !== undefined){
@@ -126,7 +129,7 @@ const SalesDashboards = ({ children }) => {
                         </div>
                         <div className="widgetItem-heading">
                             Expected Clients
-                            <div className="widget-mainhighlight">{expectedClients.results.length}</div>
+                            <div className="widget-mainhighlight">0</div>
                         </div>
                         <div className="widgetItem-heading2 widgetItem-1">
                             <DialerSipIcon style={{fill: "white", fontSize:25}}/>
@@ -165,7 +168,7 @@ const SalesDashboards = ({ children }) => {
                         </div>
                         <div className="widgetItem-heading">
                             My Comission
-                            <div className="widget-mainhighlight">Rs.0</div>
+                            <div className="widget-mainhighlight">Rs.{myComission}</div>
                         </div>
                         <div className="widgetItem-heading2 widgetItem-4">
                             <MonetizationOnIcon style={{fill: "white", fontSize:25}}/>

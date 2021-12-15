@@ -29,6 +29,20 @@ export const SetOrders = (load) => {
   };
 };
 
+export const SetInvoices = (load) => {
+  return {
+    type: "SetInvoices",
+    load,
+  };
+};
+
+export const SetAgents = (load) => {
+  return {
+    type: "SetAgents",
+    load,
+  };
+};
+
 export const SetUsers = (load) => {
   return {
     type: "All_Users",
@@ -57,12 +71,240 @@ export const SetDesignerData = (load) => {
   };
 };
 
+export const SetTotalData = (load) => {
+  return {
+    type: "TotalData",
+    load,
+  };
+};
+
+export const SetPaidUnpaidOrders = (load) => {
+  return {
+    type: "PaidUnpaidOrders",
+    load,
+  };
+};
+
+export const SalesAgent = (load) => {
+  return {
+    type: "SALES_AGENTS",
+    load,
+  };
+};
+
+export const OrderFilter = (load) => {
+  return {
+    type: "OrderFilter",
+    load,
+  };
+};
+
+export const AllInvoiceFilter = (load) => {
+  return {
+    type: "AllInvoiceFilter",
+    load,
+  };
+};
+
 export const FetchOrders = (load) => {
     return async (dispatch, state) => {
       try{
         await dispatch(Loading(true))
         const response =await axios.get(`${state().AuthReducer.baseUrl}api/order`, load)
         dispatch(SetOrders(response.data))
+        
+      }
+      catch(err) {
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+
+export const FetchOrdersByPaymentStatus = (load) => {
+    return async (dispatch, state) => {
+      try{
+        await dispatch(Loading(true))
+        const paidResponse =await axios.get(`${state().AuthReducer.baseUrl}api/order?paymentStatus=Paid`, load)
+        const unPaidResponse =await axios.get(`${state().AuthReducer.baseUrl}api/order?paymentStatus=Not Paid`, load)
+        
+        const newObj = {
+          paidOrders:paidResponse.data.results,
+          unpaidOrders:unPaidResponse.data.results
+        }
+        dispatch(SetPaidUnpaidOrders(newObj))
+        
+      }
+      catch(err) {
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+  
+export const FetchOrderByAgent = (load) => {
+    return async (dispatch, state) => {
+      try{
+        await dispatch(Loading(true))
+        const response =await axios.get(`${state().AuthReducer.baseUrl}api/order?agent=${load}`)
+        dispatch(OrderFilter(response.data))
+      }
+      catch(err) {
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+  
+export const FetchOrderByOrderStatus = (load) => {
+    return async (dispatch, state) => {
+      try{
+        await dispatch(Loading(true))
+        const response =await axios.get(`${state().AuthReducer.baseUrl}api/order?orderStatus=${load}`)
+        dispatch(OrderFilter(response.data))
+      }
+      catch(err) {
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+  
+export const FetchOrderByID = (load) => {
+    return async (dispatch, state) => {
+      try{
+        await dispatch(Loading(true))
+        const response =await axios.get(`${state().AuthReducer.baseUrl}api/order?orderNo=${load}`)
+        dispatch(OrderFilter(response.data))
+      }
+      catch(err) {
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+  
+export const FetchOrderByDate = (load) => {
+    return async (dispatch, state) => {
+      try{
+        await dispatch(Loading(true))
+        const response =await axios.get(`${state().AuthReducer.baseUrl}api/order/time?startDate=${load.fFrom}&endDate=${load.fTo}`)
+        const newObj = {
+          results:response.data
+        }
+        dispatch(OrderFilter(newObj))
+        console.log(response.data)
+      }
+      catch(err) {
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+
+export const FetchInvoices = (load) => {
+    return async (dispatch, state) => {
+      try{
+        await dispatch(Loading(true))
+        const response =await axios.get(`${state().AuthReducer.baseUrl}api/customer-invoice`, load)
+        dispatch(SetInvoices(response.data))
+        
+      }
+      catch(err) {
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+
+export const FetchInvoicesByAgent = (load) => {
+    return async (dispatch, state) => {
+      try{
+        await dispatch(Loading(true))
+        const response =await axios.get(`${state().AuthReducer.baseUrl}api/customer-invoice?agent=${load}`)
+        dispatch(AllInvoiceFilter(response.data))
+        
+      }
+      catch(err) {
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+
+export const FetchInvoicesByPayment = (load) => {
+    return async (dispatch, state) => {
+      try{
+        await dispatch(Loading(true))
+        const response =await axios.get(`${state().AuthReducer.baseUrl}api/customer-invoice?status=${load}`)
+        dispatch(AllInvoiceFilter(response.data))
+        
+      }
+      catch(err) {
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+
+export const FetchInvoicesByID = (load) => {
+    return async (dispatch, state) => {
+      try{
+        await dispatch(Loading(true))
+        const response =await axios.get(`${state().AuthReducer.baseUrl}api/customer-invoice?_id=${load}`)
+        dispatch(AllInvoiceFilter(response.data))
+      }
+      catch(err) {
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+
+export const FetchAgents = (load) => {
+    return async (dispatch, state) => {
+      try{
+        await dispatch(Loading(true))
+        const response =await axios.get(`${state().AuthReducer.baseUrl}api/user`)
+        dispatch(SetAgents(response.data))
+        
+      }
+      catch(err) {
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+
+export const FetchSalesAgent = (load) => {
+    return async (dispatch, state) => {
+      try{
+        await dispatch(Loading(true))
+        const response =await axios.get(`${state().AuthReducer.baseUrl}api/user?role=Sales`)
+        console.log("------->>>>>> ",response.data)
+        dispatch(SalesAgent(response.data))
+        
+      }
+      catch(err) {
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+
+export const FetchSalesDataByID = (load) => {
+    return async (dispatch, state) => {
+      try{
+        await dispatch(Loading(true))
+        const orderResponse =await axios.get(`${state().AuthReducer.baseUrl}api/order?agent=${load}`)
+        const customerResponse =await axios.get(`${state().AuthReducer.baseUrl}api/customer?agent=${load}`)
+        const clientResponse =await axios.get(`${state().AuthReducer.baseUrl}api/client-database?agent=${load}`)
+        const newObj = {
+          orders:orderResponse.data.totalResults,
+          customers:customerResponse.data.totalResults,
+          clients:clientResponse.data.totalResults,
+        }
+        dispatch(SetTotalData(newObj))
         
       }
       catch(err) {
@@ -83,6 +325,21 @@ export const FetchAssignOrders = (load) => {
       catch(err) {
         dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
         dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+
+  
+  export const UpdateAgentInfo = (load, id) => {
+    return async (dispatch, state) => {
+      try{
+        const response = await axios.patch(`${state().AuthReducer.baseUrl}api/user/${id}`, load)
+        dispatch(FetchAgents())
+        dispatch(ChangeSnackData({text:"Agent Information has updated.", variant:"success"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+      catch(err) {
+        console.log(state().AuthReducer.loginData.user.id,"<==== Error while fetching all Client Data ===> ",err.response.data.message)
       }
     }
   };
@@ -216,7 +473,6 @@ export const CreateNewAgent = (load) => {
 };
 
 export const CreateNewState = (load) => {
-  console.log("===> ",load)
   return async (dispatch, state) => {
     try{
       await dispatch(Loading(true))
@@ -233,7 +489,6 @@ export const CreateNewState = (load) => {
 };
 
 export const CreateNewService = (load) => {
-  console.log("===> ",load)
   return async (dispatch, state) => {
     try{
       await dispatch(Loading(true))

@@ -21,7 +21,7 @@ import OrderPopover from './component/OrderPopover'
 import EditOrderPopover from './component/editOrderPopover'
 import { useSelector, useDispatch } from 'react-redux'
 import { ALL_ORDER_DATA, ALL_CUSTOMER_DATA } from '../../../redux/reducer/AgentDataReducer';
-import { UpdateOrderByID, UpdateOrderByCustomer, UpdateOrderByPaymentStatus, SetMyOrders, UpdateOrderByDate } from '../../../redux/action/AgentAction';
+import { UpdateOrderByID, UpdateOrderByCustomer, UpdateOrderByPaymentStatus, SetMyOrders, UpdateOrderByDate, FetchOrderByDate } from '../../../redux/action/AgentAction';
 import { ChangeSnackData, ChangeSnackFlag } from '../../../redux/action/AuthAction';
 
 
@@ -114,6 +114,7 @@ const RegisterClient = () => {
     const [editOrder, setEditOrder] = useState({})
     const [fFrom, setFFrom] = useState(new Date('2021-08-18T21:11:54'))
     const [fTo, setFTo] = useState(new Date('2021-08-18T21:11:54'))
+    
 
     const Customers = ClientData.results
     const allOrders = { setTableData, setOrderFlag, setOrderData, setInvoiceFlag, rows: OrderData.results }
@@ -133,7 +134,7 @@ const RegisterClient = () => {
 
     const sortByDate = () => {
         if(fFrom != "Wed Aug 18 2021 21:11:54 GMT+0500 (Pakistan Standard Time)" && fTo != "Wed Aug 18 2021 21:11:54 GMT+0500 (Pakistan Standard Time)"){
-            dispatch(UpdateOrderByDate(fTo, fFrom))
+            dispatch(FetchOrderByDate({fTo, fFrom}))
         } else {
             dispatch(ChangeSnackData({text:"You have to set Date range to fetch the data", variant:"error"}))
             dispatch(ChangeSnackFlag(true))
@@ -251,110 +252,6 @@ const RegisterClient = () => {
                 </div>
             </div>
 
-            {/* <div className="myOrder-mainContainer">
-
-                <div className="myOrder-tableSort">
-
-                    <div className="registerSort-text">
-                        Filter
-                    </div>
-
-                    <FormControl style={{ marginTop: '15px' }} variant="outlined">
-                        <InputLabel style={{ color: '#626FE4' }} htmlFor="outlined-adornment-amount">By Invoice ID</InputLabel>
-                        <OutlinedInput
-                            className="registerClient-tableSelect"
-                            id="outlined-adornment-amount"
-                            value={fOrder}
-                            onChange={(e) => setFOrder(e.target.value)}
-                            startAdornment={<InputAdornment position="start">
-                                <FingerprintIcon style={{ fill: "#626FE4" }} />
-                            </InputAdornment>}
-                            labelWidth={60}
-                        />
-                    </FormControl>
-
-                    <CssFormControl variant="outlined">
-                        <FormHelperText style={{ color: '#626FE4' }}>By Customer</FormHelperText>
-                        <Select
-                            className="registerClient-tableSelect"
-                            value={fCustomer}
-                            onChange={(e) => setFCustomer(e.target.value)}
-                            displayEmpty
-                            inputProps={{ 'aria-label': 'Without label' }}
-                        >
-                            <MenuItem value="" disabled>
-                                Select Customer
-                            </MenuItem>
-                            <MenuItem value={"Un Delivered"}>Tehseen Jawed</MenuItem>
-                            <MenuItem value={"Un Delivered"}>Tehseen Jawed</MenuItem>
-                            <MenuItem value={"Un Delivered"}>Tehseen Jawed</MenuItem>
-                            <MenuItem value={"Un Delivered"}>Tehseen Jawed</MenuItem>
-                            <MenuItem value={"Un Delivered"}>Tehseen Jawed</MenuItem>
-                        </Select>
-                    </CssFormControl>
-
-                    <CssFormControl variant="outlined">
-                        <FormHelperText style={{ color: '#626FE4' }}>By Status</FormHelperText>
-                        <Select
-                            className="registerClient-tableSelect"
-                            value={fDelStatus}
-                            onChange={(e) => setFDelStatus(e.target.value)}
-                            displayEmpty
-                            inputProps={{ 'aria-label': 'Without label' }}
-                        >
-                            <MenuItem value="" disabled>
-                                Payment Status
-                            </MenuItem>
-                            <MenuItem value={"Un Delivered"}>Un Delivered</MenuItem>
-                            <MenuItem value={"Delivered"}>Delivered</MenuItem>
-                        </Select>
-                    </CssFormControl>
-
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePick
-                            inputVariant="outlined"
-                            style={{ marginTop: 15 }}
-                            className={classes.dateFrom}
-                            format="MM/dd/yyyy"
-                            margin="normal"
-                            id="date-picker-inline"
-                            label="From"
-                            value={fFrom}
-                            onChange={(e) => setFFrom(e)}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change date',
-                            }}
-                        />
-                    </MuiPickersUtilsProvider>
-
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                        <KeyboardDatePick
-                            inputVariant="outlined"
-                            style={{ marginTop: 15 }}
-                            className={classes.dateFrom}
-                            format="MM/dd/yyyy"
-                            margin="normal"
-                            id="date-picker-inline"
-                            label="To"
-                            value={fTo}
-                            onChange={(e) => setFTo(e)}
-                            KeyboardButtonProps={{
-                                'aria-label': 'change date',
-                            }}
-                        />
-                    </MuiPickersUtilsProvider>
-
-                    <Button className={classes.filterBtn} variant="contained" href="#contained-buttons"> Filter </Button>
-
-                    <Button className={classes.filterBtn} variant="contained" href="#contained-buttons"> Reset </Button>
-
-                </div>
-                <div className="myOrder-table">
-                    <div className="tableHeader">
-                        All Invoices
-                    </div>
-                </div>
-            </div> */}
         </div>)
 }
 

@@ -13,6 +13,22 @@ export default function DataTable({data}) {
     
     const columns = [
       { 
+        field: 'orderNo',
+        headerName: 'Order',
+        headerAlign: 'center',
+        align: 'center',
+        description: 'This column has a value getter and is not sortable.',
+        sortable: false,
+        width: 160,
+      renderCell: (params) => {
+        return (
+          <div className="d-flex justify-content-between align-items-center" style={{ cursor: "pointer", display: 'flex', alignItems: 'center' }}>
+            {params.row.orderNo}
+          </div>
+        );
+      },
+      },
+      { 
         field: 'customer',
         headerName: 'Customer',
         headerAlign: 'center',
@@ -82,6 +98,7 @@ export default function DataTable({data}) {
         type: 'number',
         width: 170,
         editable: false,
+        renderCell: (params) => <div>{new Date(params.row.createdAt).toDateString()}</div>
       },
       {
         field: 'paidDate',

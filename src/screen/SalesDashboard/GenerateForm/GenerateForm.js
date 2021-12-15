@@ -142,6 +142,7 @@ function TabPanel(props) {
         newObj.append('orderStatus','Not Assign');
         newObj.append('paymentStatus','Not Paid');
         newObj.append('revisions',[]);
+        newObj.append('completed',"Not Completed");
         newObj.append('amount',amount);
         newObj.append('serviceType',service);
         upload.forEach((item) => newObj.append("files", item))
@@ -190,7 +191,7 @@ function TabPanel(props) {
     }
     
     useEffect(() => {
-        if(InvoiceId !== "") setInvoiceLink(`${BaseURL}paypal/${InvoiceId}`)
+        if(InvoiceId !== "") setInvoiceLink(`https://mtech-pk.web.app/paypal/${InvoiceId}`)
     },[InvoiceId])
     return (
       <div className={classes.root}>

@@ -1,0 +1,354 @@
+.home-backgroun-container {
+    z-index: 100;
+    height: 1000px;
+    background-position: 100% 100%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.backbutton{
+    
+    position: relative;
+}
+.backgroun-container{
+    z-index: -10000;
+    position: absolute
+}
+.home-header-container1{
+    width: 600px;
+}
+.header-image{
+    width: 100%;
+}
+.header-sidecontainer{
+    font-size: 20px;
+    margin-bottom: 10px;
+    font-style: italic;
+    font-weight: 600;
+    color: $landing-text-activecolor;
+}
+.header-sidecontainer-desc{
+    font-size: 40px;
+    font-weight: 800;
+    color: white; 
+    font-family: 'Inter', sans-serif;
+}
+.header-sidecontainer-desc2{
+    font-size: 20px;
+    margin-top: 25px;
+    text-align: justify;
+    line-height: 35px;
+    color: white; 
+}
+.buttonContainer{
+    display: flex;
+    position: relative;
+    margin-top: 70px;
+  }
+  .foolter-icon-card{
+    color: white;
+    width: 150px;
+    font-size: 17px;
+    font-weight: 800px;
+  }
+  .foolter-icon-card-absolute{
+    color: white;
+    width: 150px;
+    top: 15px;
+    position: absolute;
+    left: 55px;
+    z-index: 0;
+    font-size: 17px;
+    font-weight: 800px;
+  }
+  .foolter-icon-button{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .footer-button{
+    width: 50px;
+    height: 50px;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    background-color: $landing-text-activecolor;
+    overflow: hidden;
+    z-index: 1;
+    cursor: pointer;
+    border-radius: 40px;
+    transition: 0.2s;
+  }
+  .footer-button:hover{
+    width: 200px;
+    transition: 0.2s;
+  
+  }
+
+//   Features
+
+.services-maincontainer{
+    width: 100%;
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+.services-service-header{
+    font-size: 45px;
+    font-family: 'Inter', sans-serif;
+}
+.service-contaienrdesc{
+    font-size: 20px;
+    text-align: center;
+    margin-top: 25px;
+    width: 70%;
+}
+.service-sidecontainer{
+    width: 85%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    height: 400px;
+}
+.serivce-card-1{
+    width: 25%;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+}
+.servicecard-head{
+    font-size: 22px;
+    font-weight: 600;
+    margin: 5px 0px;
+}
+.servicecard-desc{
+    font-size: 15px;
+    text-align: justify;
+}
+.service-icon{
+    border-radius: 25px;
+    padding: 15px;
+    background-color: #141f26;
+}
+
+// Services
+
+.service-container{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.set-container{
+    height: 900px;
+    // border-top: 1px solid gray;
+}
+.service-innercontainer{
+    width: 80%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+.services-header{
+    font-size: 55px;
+    margin: 40px 0px;
+    font-family: 'Inter', sans-serif;
+    color: $landing-text-activecolor;
+}
+.service-card-container{
+    width: 400px;
+    height: 400px;
+    display: flex;
+    margin: 20px;
+    flex-direction: column;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: white;
+    box-shadow: 0px 0px 5px #c0c0c0;
+    transition: 0.3s;
+}
+.service-card-container:hover{
+    box-shadow: 0px 0px 25px #c0c0c0;
+    transition: 0.3s;
+}
+.service-head{
+    font-size: 22px;
+    font-weight: 600;
+}
+.service-desc{
+    font-size: 17px;
+    color: gray;
+    width: 80%;
+    text-align: center;
+}
+.innerservice-container{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    width: 100%;
+}
+.benifits-container{
+    display: flex;
+    width: 90%;
+    justify-content: space-between;
+}
+.innerbenefits-container{
+    width: 50%;
+}
+.innerbenefits-container2{
+    display: flex;
+    flex-direction: column;
+    width: 47%;
+}
+.topCharacters-heading{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    cursor: pointer;
+    padding: 25px 0px;
+    border-bottom: 1px solid gray;
+}
+.topCharacter-heading-div{
+    font-size: 18px;
+}
+.topcharacter-desc{
+    padding: 15px;
+    font-size: 17px;
+    line-height: 30px;
+}
+.benefit-activeButton{
+    border-radius: 15px;
+    color: #141f26;
+    font-family: 'Inter', sans-serif;
+    font-size: 20px;
+}
+.benefit-desc{
+    font-size: 17px;
+    margin-top: 15px;
+    line-height: 30px;
+    width: 80%;
+}
+.getinTouch-container{
+    width: 100%;
+}
+.getintouch-sideheader{
+    font-size: 22px;
+    width: 100%;
+    text-align: center;
+    font-weight: 600;
+    font-family: 'Inter', sans-serif;
+    color: $landing-text-activecolor;
+}
+.getintouch-header{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    font-size: 40px;
+}
+.getintouch-formcontainer{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.form-innercontainer{
+    width: 80%;
+    height: 700px;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    background-color: #141f26;
+    border-radius: 55px;
+    margin: 50px 0px;
+}
+.innerformcontainer1{
+    width: 35%;
+}
+.innerformcontainer2{
+    width: 50%;
+    margin-top:40px;
+}
+.getintouch-heading{
+    color: white;
+    font-size: 30px;
+}
+.getintouch-desc{
+    font-size: 20px;
+    text-align: justify;
+    display: flex;
+    align-items: center;
+    margin-top: 15px;
+    line-height: 30px;
+    color: white;
+}
+.getintouch-seperator{
+    width: 100%;
+    border: 1px solid rgb(59, 59, 59);
+    margin: 30px 0px;
+}
+.contact-form{
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+}
+.inputfields-half{
+    width: 45%;
+    height: 50px;
+    background-color: white;
+    margin: 5px;
+    border-radius: 5px;
+    border: none;
+    font-size: 20px;
+    padding: 0px 2.5px;
+}
+.inputfields-full{
+    margin: 5px;
+    width: 91%;
+    height: 50px;
+    background-color: white;
+    border-radius: 5px;
+    border: none;
+    padding: 0px 5px;
+    font-size: 20px;
+}
+.textField-full{
+    margin: 5px;
+    width: 91%;
+    height: 150px;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px 5px;
+    border: none;
+    font-size: 20px;
+}
+.contactform-button{
+    margin-top: 20px;
+    background-color: $landing-text-activecolor;
+    border-radius: 5px;
+    width: 92%;
+    height: 50px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    color: white;
+    font-size: 20px;
+    transition: 0.3s;
+}
+.contactform-button:hover{
+    background-color: #3173a1;
+    transition: 0.3s;
+}
+.setheadie{
+    width: 100%;
+    margin-bottom: 25px;
+    text-align: center;
+}

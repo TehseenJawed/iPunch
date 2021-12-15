@@ -148,12 +148,14 @@ export const LoginFunction = (load) => {
       try{
         dispatch(Loading(true))
         const response = await axios.post(`${state().AuthReducer.baseUrl}api/auth/login`, load)
-        dispatch(Login(response.data))
-        dispatch(ChangeSnackData({text:"You have Loggedin successfully.", variant:"success"}))
-        dispatch(ChangeSnackFlag(true))
+        console.log(response.data) 
+        await dispatch(Login(response.data))
+        await dispatch(ChangeSnackData({text:"You have Loggedin successfully.", variant:"success"}))
+        await dispatch(ChangeSnackFlag(true))
         
       }
       catch(err) {
+        console.log(err)
         dispatch(Loading(false))
         dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
         dispatch(ChangeSnackFlag(true))

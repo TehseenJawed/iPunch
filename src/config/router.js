@@ -6,8 +6,8 @@ import {
 import ProtectedRoute from './route/protectedRoute'
 import SalesDashboard from '../components/SalesDashboard/salesDashboards';
 import DesignerDashboard from '../components/DesignerDashboard/designerDashboards';
-import CustomerDashboard from '../components/CustomerDashboard/customerDashboards'; 
-import AdminDashboard from '../components/AdminDashboard/adminDashboard'; 
+import CustomerDashboard from '../components/CustomerDashboard/customerDashboards';
+import AdminDashboard from '../components/AdminDashboard/adminDashboard';
 
 import Home from '../screen/Home/Home';
 import Login from '../screen/Login/login';
@@ -20,7 +20,7 @@ import CustomerManagement from '../screen/SalesDashboard/CustomerManagement/Cust
 import PaymentManagement from '../screen/SalesDashboard/PaymentManagement/PaymentManagement';
 import UserProfile from '../screen/SalesDashboard/Profile/Profile';
 
-import DesignerDash from '../screen/DesignerDashboard/Dashboard/Dashboard'; 
+import DesignerDash from '../screen/DesignerDashboard/Dashboard/Dashboard';
 import MyDesigns from '../screen/DesignerDashboard/MyDesigns/MyDesigns';
 import MyInvoices from '../screen/DesignerDashboard/MyInvoices/MyInvoices';
 
@@ -33,12 +33,27 @@ import AllInvoices from '../screen/AdminDashboard/AllInvoices/AllInvoices';
 import PayPal from '../screen/SalesDashboard/Invoice/paypal'
 
 import Invoice from '../components/Invoice/Invoice'
+import LandingHome from '../screen/LandingPages/Home.js'
+import LandingWrapper from './route/landingpageWrapper'
+import LandingAbout from '../screen/LandingPages/About'
 
 function FunctionalRoute() {
     return (
         <Switch>
 
             <Route exact path="/">
+                <LandingWrapper>
+                    <LandingHome />
+                </LandingWrapper>
+            </Route>
+
+            <Route exact path="/about">
+                <LandingWrapper>
+                    <LandingAbout />
+                </LandingWrapper>
+            </Route>
+
+            <Route exact path="/dashboard">
                 <ProtectedRoute>
                     <SalesDashboard>
                         <Home />
@@ -58,7 +73,7 @@ function FunctionalRoute() {
                 <Invoice />
             </Route>
 
-           {/* Sales Dashboard */}
+            {/* Sales Dashboard */}
             <Route exact path="/ip-sales/dashboard">
                 <ProtectedRoute>
                     <SalesDashboard>
@@ -148,7 +163,7 @@ function FunctionalRoute() {
                     </CustomerDashboard>
                 </ProtectedRoute>
             </Route>
-            
+
             <Route exact path="/ip-admin/dashboard">
                 <ProtectedRoute>
                     <AdminDashboard>

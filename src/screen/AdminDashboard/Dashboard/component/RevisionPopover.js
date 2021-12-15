@@ -32,7 +32,7 @@ const useStyles = makeStyles((theme) => ({
   innerPaper1: {
     width: '100%',
     height: 170,
-    background: '#F5365C',
+    background: '#626FE4',
     borderRadius: 10,
     color: 'white'
   },
@@ -42,7 +42,9 @@ const useStyles = makeStyles((theme) => ({
   button: {
     margin: theme.spacing(1),
     width: '90%',
-    marginLeft: '5%'
+    marginLeft: '5%',
+    background:'#626FE4',
+    color:'white'
   },
   textField: {
     width: 400,
@@ -117,12 +119,11 @@ export default function TransitionsModal({ data }) {
 
               <Button
                 variant="contained"
-                color="secondary"
                 className={classes.button}
                 endIcon={<Icon>send</Icon>}
                 onClick={Deliver}
               >
-                Deliver
+                RESEND TO DESIGNER
               </Button>
 
             </div>

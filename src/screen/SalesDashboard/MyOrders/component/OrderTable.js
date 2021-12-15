@@ -93,6 +93,7 @@ export default function DataTable({ data }) {
       type: 'number',
       width: 160,
       editable: false,
+      renderCell: (params) => <div>{new Date(params.row.updatedAt).toDateString()}</div>
     },
     {
       field: 'revision',

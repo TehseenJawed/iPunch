@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {Link, Redirect} from 'react-router-dom';
 import CompanyLogo from '../../assets/brand/logo.svg'
 import DashboardIcon from '@material-ui/icons/Dashboard';
@@ -17,14 +17,18 @@ import FlipToBackIcon from '@material-ui/icons/FlipToBack';
 import LibraryBooksIcon from '@material-ui/icons/LibraryBooks';
 import {useSelector, useDispatch} from 'react-redux';
 import {LOGIN_FLAG, LOGIN_DATA} from '../../redux/reducer/AuthReducer'
+import {PAID_UNPAID_ORDERS} from '../../redux/reducer/AdminReducer'
 import ChangePassword from '../../components/ChangePassword/ChangePassword'
 
 const AdminDashboards = ({ children }) => {
     const [anchorEl, setAnchorEl] = useState(null);
+    const [totalSales, setTotalSales] = useState(false)
     const LoginFlag = useSelector(LOGIN_FLAG)
     const LoginData = useSelector(LOGIN_DATA)
+    const PaidUnpaidDesigns = useSelector(PAID_UNPAID_ORDERS)
     const [changeFlag, setChangeFlag] = useState(false)
-    console.log("Flag is here ==> ",LoginFlag)
+    const {paidOrders} = PaidUnpaidDesigns
+
     const DropObj = {
         anchorEl, 
         setAnchorEl,
@@ -35,6 +39,14 @@ const AdminDashboards = ({ children }) => {
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
+
+    useEffect(() => {
+        let sales = 0
+        for(var a = 0; a< paidOrders.length; a++){
+            sales = sales + paidOrders[0].amount
+        }
+        setTotalSales(sales)
+    },[])
     return (
         <div className="salesContainer">
             {LoginFlag ? null : <Redirect to="/login" />}
@@ -57,9 +69,9 @@ const AdminDashboards = ({ children }) => {
 
                 <Link to="/ip-admin/register-client" className="salesSidemenu-item">
                     <LibraryBooksIcon style={{ fill: "#F5365C", fontSize: 18 }} />
-                    <div className="salesSide-text">Register Clients</div>
+                    <div className="salesSide-text">Find Data</div>
                 </Link>
-
+{/* 
                 <Link to="/ip-admin/all-orders" className="salesSidemenu-item">
                     <FlipToBackIcon style={{ fill: "#11CDEF", fontSize: 18 }} />
                     <div className="salesSide-text">All Orders</div>
@@ -68,12 +80,7 @@ const AdminDashboards = ({ children }) => {
                 <Link to="/ip-admin/all-invoices" className="salesSidemenu-item">
                     <StorageIcon style={{ fill: "#FB636B", fontSize: 18 }} />
                     <div className="salesSide-text">All Invoices</div>
-                </Link>
-
-                <Link className="salesSidemenu-item">
-                    <AccountBalanceWalletIcon style={{ fill: "#FFD600", fontSize: 18 }} />
-                    <div className="salesSide-text">Generate Invoices</div>
-                </Link>
+                </Link> */}
 
             </div>
             <div className="salesSide-domeMenu"></div>
@@ -97,7 +104,7 @@ const AdminDashboards = ({ children }) => {
                         </div>
                         <div className="widgetItem-heading">
                             Paid Orders
-                            <div className="widget-mainhighlight">37</div>
+                            <div className="widget-mainhighlight">{PaidUnpaidDesigns.paidOrders.length}</div>
                         </div>
                         <div className="widgetItem-heading2 widgetItem-1">
                             <DialerSipIcon style={{fill: "white", fontSize:25}}/>
@@ -110,7 +117,7 @@ const AdminDashboards = ({ children }) => {
                        </div>
                         <div className="widgetItem-heading">
                             Unpaid Orders
-                            <div className="widget-mainhighlight">7</div>
+                            <div className="widget-mainhighlight">{PaidUnpaidDesigns.unpaidOrders.length}</div>
                         </div>
                         <div className="widgetItem-heading2 widgetItem-2">
                             <GroupAddIcon style={{fill: "white", fontSize:25}}/>
@@ -123,7 +130,7 @@ const AdminDashboards = ({ children }) => {
                         </div>
                         <div className="widgetItem-heading">
                             Monthly Sales
-                            <div className="widget-mainhighlight">$1700</div>
+                            <div className="widget-mainhighlight">${totalSales}</div>
                         </div>
                         <div className="widgetItem-heading2 widgetItem-3">
                             <MoveToInboxIcon style={{fill: "white", fontSize:25}}/>
@@ -136,7 +143,7 @@ const AdminDashboards = ({ children }) => {
                         </div>
                         <div className="widgetItem-heading">
                             All Comissions
-                            <div className="widget-mainhighlight">Rs.3500</div>
+                            <div className="widget-mainhighlight">Rs.0</div>
                         </div>
                         <div className="widgetItem-heading2 widgetItem-4">
                             <MonetizationOnIcon style={{fill: "white", fontSize:25}}/>

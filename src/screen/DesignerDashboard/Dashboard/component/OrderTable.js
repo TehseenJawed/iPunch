@@ -33,29 +33,6 @@ const useRowStyles = makeStyles({
   }
 });
 
-const CalculateComission = (status, amount) => {
-  const finalAmount = 0
-  switch (status) {
-    case 'Changed from client':
-
-  }
-}
-
-function createData(id, name, timeLeft, type, details, price) {
-  return {
-    id,
-    name,
-    timeLeft,
-    type,
-    details,
-    price,
-    revision: [
-      { date: '2020-01-05', desc: '11091700', status: 'Changed from client', amount: 0, file: '' },
-      { date: '2020-01-02', desc: 'Anonymous', status: 'Designer Error', amount: 100, file: '' },
-    ],
-  };
-}
-
 function Row(props) {
   const { row, setUnpaidFlag, setDeliverOrder } = props;
   const [open, setOpen] = React.useState(false);
@@ -73,6 +50,7 @@ function Row(props) {
     }
 
   }
+  console.log(row)
   return (
     <React.Fragment>
       <TableRow className={classes.root}>
@@ -82,7 +60,7 @@ function Row(props) {
           </IconButton>
         </TableCell>
         <TableCell component="th" scope="row" align="center">
-          {row.id}
+          {row.orderNo}
         </TableCell>
         <TableCell align="center">{row.name}</TableCell>
         <TableCell align="center">{row.created_at}</TableCell>

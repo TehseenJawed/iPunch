@@ -238,12 +238,12 @@ export const SetUnpaidOrders = (load) => {
 export const UpdateOrderByID = (load) => {
     return async (dispatch, state) => {
       try{
-        const response = await axios.get(`${state().AuthReducer.baseUrl}api/order/${load}`)
-        const newObj={
-          results:[response.data]
-        }
-        console.log(newObj)
-        dispatch(AllOrderSort(newObj))
+        const response = await axios.get(`${state().AuthReducer.baseUrl}api/order?orderNo=${load}`)
+        // const newObj={
+        //   results:[response.data]
+        // }
+        console.log(response.data)
+        dispatch(AllOrderSort(response.data))
       }
       catch(err) {
         console.log(state().AuthReducer.loginData.user.id,"<==== Error while fetching all Client Data ===> ",err.response.data.message)
@@ -318,10 +318,27 @@ export const SetAllCustomer_FilterData = (load) => {
     }
   };
 
+  export const FetchOrderByDate = (load) => {
+    return async (dispatch, state) => {
+      try{
+        const response =await axios.get(`${state().AuthReducer.baseUrl}api/order/time?agent=${state().AuthReducer.loginData.user.id}&startDate=${load.fFrom}&endDate=${load.fTo}`)
+        const newObj = {
+          results:response.data
+        }
+        dispatch(AllOrderSort(newObj))
+        console.log(response.data)
+      }
+      catch(err) {
+        dispatch(ChangeSnackData({text:err.response.data.message, variant:"error"}))
+        dispatch(ChangeSnackFlag(true))
+      }
+    }
+  };
+
 export const SetDeliverOrders = (load) => {
     return async (dispatch, state) => {
       try{
-        const response = await axios.get(`${state().AuthReducer.baseUrl}api/order?agent=${state().AuthReducer.loginData.user.id}&limit=200`)
+        const response = await axios.get(`${state().AuthReducer.baseUrl}api/order?agent=${state().AuthReducer.loginData.user.id}&limit=200000`)
         dispatch(SetDeliver_Orders(response.data))
       }
       catch(err) {

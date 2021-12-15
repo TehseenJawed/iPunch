@@ -27,7 +27,6 @@ const Login = () => {
     const LoginData = useSelector(LOGIN_DATA)
     const dispatch = useDispatch()
 
-
     const Signin = () => {
         const newObj = {
             email,
@@ -41,7 +40,7 @@ const Login = () => {
         setSnackBar,
         ...snackObj
     }
-console.log("65656565",loadingSelector)
+    
     useEffect(() => {
         if(email.includes("@")){
             setPassError(false)
