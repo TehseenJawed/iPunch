@@ -4,17 +4,19 @@ import { Link } from 'react-router-dom'
 function Header() {
     return (
         <div className={window.location.pathname == "/" ? "landing-header-container" : "landing-headercontainer"}>
-            <div className="landing-header-subcontainer1">
-                <img className="landing-brand-logo" src={BrandLogo} alt="Ideal Punch" />
-            </div>
 
             <div className="landing-header-subcontainer2">
+
+                <div className="landing-header-subcontainer1">
+                    <img className="landing-brand-logo" src={BrandLogo} alt="Ideal Punch" />
+                </div>
+                
                 <div className="landing-links-container">
 
                     <Link to="/" className={window.location.pathname == '/' ? "heaeder-link-activetext" : "heaeder-link-text"}>
                         Home
                     </Link>
-                    
+
                     <Link to="/about" className={window.location.pathname == '/about' ? "heaeder-link-activetext" : "heaeder-link-text"}>
                         About us
                     </Link>
@@ -36,8 +38,9 @@ function Header() {
                     </Link>
 
                 </div>
-                <Link to="/login" className="landingbutton">
-                    Signin Now
+
+                <Link to="/login" className='header-signup'>
+                    Sign in Now
                 </Link>
             </div>
         </div>

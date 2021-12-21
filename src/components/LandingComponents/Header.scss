@@ -1,6 +1,7 @@
 .landing-header-container {
     width: 100%;
     height: 100px;
+    z-index: 10000;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -8,6 +9,7 @@
 .landing-headercontainer {
     width: 100%;
     height: 100px;
+    z-index: 10000;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -15,7 +17,7 @@
     background-color: #141f26;
 }
 .landing-brand-logo {
-    width: 200px;
+    width: 220px;
 }
 .landing-header-subcontainer1 {
     width: 20%;
@@ -25,26 +27,63 @@
 }
 
 .landing-header-subcontainer2 {
-    width: 60%;
+    width: 95%;
+    z-index: 1000;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 5px;
+}
+.landing-links-container{
+    width: 800px;
+    height: 80px;
+    overflow: hidden;
+    background-color: white;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    border-radius: 15px;
+    box-shadow: 5px 20px 30px #00000070;
+}
+.header-signup{
+    width: 160px;
+    height: 55px;
+    text-decoration: none;
     display: flex;
     justify-content: center;
     align-items: center;
-}
-.landing-links-container{
-    width: 60%;
-    display: flex;
-    justify-content: space-evenly;
+    background-color: #E10E0E;
+    font-size: 17px;
+    color: white;
+    font-weight: 800;
+    border-radius: 10px;
 }
 .heaeder-link-text{
     text-decoration: none;
+    height: 100%;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     font-size: 18px;
     font-weight: 600;
-    color: $landing-text-color;
+    color: black;
+    transition: 0.3s;
+}
+.heaeder-link-text:hover{
+    background-color: rgba(0, 0, 0, 0.103);
+    border-radius: 10px;
+    transition: 0.3s;
 }
 .heaeder-link-activetext{
     text-decoration: none;
     font-size: 18px;
+    width: 100%;
+    height: 100%;
     font-weight: 600;
+    display: flex;
+    justify-content: center;
+    align-items: center;
     color: $landing-text-activecolor;
 }
 .landingbutton{
@@ -59,5 +98,37 @@
 }
 
 @media screen and (max-width: 1440px) and (min-width: 1024px) {
-    
+    .landing-brand-logo{
+        width: 200px;
+    }
+    .heaeder-link-text{
+        font-size: 16px;
+    }
+    .heaeder-link-activetext{
+        font-size: 16px;
+    }
+    .landing-links-container{
+        width: 600px;
+        height: 70px;
+    }
+    .landing-header-subcontainer2 {
+        width: 100%;
+    }
+}
+
+@media screen and (max-width: 1024px) and (min-width: 768px) {
+    .landing-header-subcontainer2{
+        flex-wrap: wrap;
+    }
+    .landing-links-container{
+        width: 800px;
+    }
+    .landing-header-subcontainer1{
+        width: 100%;
+        justify-content: flex-start;
+        height: 200px;
+    }
+    .landing-brand-logo{
+        margin-top: 70px;
+    }
 }

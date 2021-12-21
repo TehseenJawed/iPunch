@@ -14,9 +14,9 @@ function Home() {
 
             <Services />
 
-            <Benifits />
-
-            <GetinTouch />
+            {/* <Benifits /> */}
+{/* 
+            <GetinTouch /> */}
             
         </div>
     )
